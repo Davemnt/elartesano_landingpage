@@ -1,0 +1,1870 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Artesano - Panadería Artesanal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --color-primary: #ede8d0;
+            --color-secondary: #607178;
+            --color-dark: #01273c;
+            --color-accent: #353c42;
+            --color-white: #FFFFFF;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: transparent !important;
+            box-shadow: none;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            backdrop-filter: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar.scrolled {
+            background: rgba(1, 39, 60, 0.95) !important;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--color-white) !important;
+            font-weight: 800;
+            transition: color 0.3s ease;
+        }
+
+        .navbar.scrolled .navbar-brand {
+            color: var(--color-primary) !important;
+        }
+
+        .nav-link {
+            color: var(--color-white) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .navbar.scrolled .nav-link {
+            color: var(--color-primary) !important;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--color-primary) !important;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* Carrito Button */
+        .btn-carrito {
+            background: var(--color-primary);
+            color: var(--color-dark);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-carrito:hover {
+            background: var(--color-secondary);
+            color: var(--color-white);
+            transform: scale(1.1);
+        }
+
+        .badge-carrito {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Modal Carrito */
+        .modal-carrito {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-carrito.show {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-end;
+            overflow-y: auto;
+            padding-top: 100px;
+        }
+
+        .modal-content-carrito {
+            background-color: var(--color-white);
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            padding: 30px;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-header-carrito {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 15px;
+        }
+
+        .modal-header-carrito h2 {
+            margin: 0;
+            color: var(--color-secondary);
+            font-size: 1.8rem;
+        }
+
+        .btn-cerrar {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-dark);
+        }
+
+        .btn-cerrar:hover {
+            color: var(--color-primary);
+        }
+
+        .carrito-items {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .carrito-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .carrito-item-info {
+            flex: 1;
+        }
+
+        .carrito-item-nombre {
+            font-weight: 600;
+            color: var(--color-secondary);
+            margin-bottom: 5px;
+        }
+
+        .carrito-item-cantidad {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        .carrito-item-cantidad button {
+            background: var(--color-primary);
+            color: var(--color-dark);
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .carrito-item-cantidad button:hover {
+            background: var(--color-secondary);
+            color: white;
+        }
+
+        .carrito-item-cantidad input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid var(--color-primary);
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .carrito-item-precio {
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .btn-eliminar {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-eliminar:hover {
+            background: #c0392b;
+        }
+
+        .carrito-vacio {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .carrito-vacio i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .carrito-resumen {
+            border-top: 2px solid var(--color-primary);
+            padding-top: 15px;
+        }
+
+        .resumen-fila {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .resumen-fila.total {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: var(--color-secondary);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .btn-checkout {
+            background: var(--color-primary);
+            color: var(--color-dark);
+            padding: 12px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-checkout:hover {
+            background: var(--color-secondary);
+            color: white;
+        }
+
+        .btn-checkout:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Hero Section - Estilos modernizados */
+        #inicio {
+            min-height: 100vh;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--color-white);
+            position: relative;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Container para la imagen de fondo con filtro */
+        .hero-background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            object-position: center;
+            z-index: -3;
+            filter: brightness(0.6) contrast(1.1) saturate(0.9);
+            transition: all 0.3s ease;
+            margin: 0;
+            padding: 0;
+            transform: scale(1.01);
+        }
+
+        /* Overlay simple para mejor legibilidad del texto */
+        .hero-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(1, 39, 60, 0.4);
+            z-index: -2;
+            margin: 0;
+            padding: 0;
+        }
+
+        #inicio::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(1, 39, 60, 0.3) 0%, 
+                transparent 50%, 
+                rgba(237, 232, 208, 0.2) 100%);
+            backdrop-filter: blur(1px);
+            z-index: -1;
+            height: 100vh;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        /* Botón de pantalla completa */
+        .btn-fullscreen {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(237, 232, 208, 0.2);
+            color: var(--color-white);
+            border: 2px solid rgba(237, 232, 208, 0.3);
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-fullscreen:hover {
+            background: rgba(237, 232, 208, 0.3);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            transform: scale(1.1);
+        }
+
+        /* Estilos para pantalla completa */
+        .fullscreen-mode {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999 !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
+        }
+
+        .fullscreen-mode .hero-content {
+            animation: fadeInScale 0.5s ease;
+        }
+
+        .fullscreen-mode .btn-fullscreen i::before {
+            content: '\F1AA'; /* Icono de salir de pantalla completa */
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .hero-content h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: var(--color-primary);
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .btn-primary-custom {
+            background: var(--color-primary);
+            color: var(--color-dark);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .btn-primary-custom:hover {
+            background: var(--color-secondary);
+            color: var(--color-white);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.4);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 3rem;
+            color: var(--color-secondary);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--color-primary);
+        }
+
+        .section-title p {
+            color: var(--color-dark);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 30px auto 0;
+        }
+
+        /* Sobre Nosotros */
+        #sobre-nosotros {
+            background: #f8f9fa;
+        }
+
+        .about-image {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.1);
+        }
+
+        .about-content {
+            padding: 0 30px;
+        }
+
+        .about-content h3 {
+            font-size: 2.2rem;
+            color: var(--color-secondary);
+            margin-bottom: 20px;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .feature-box {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: var(--color-white);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-right: 20px;
+            min-width: 60px;
+        }
+
+        /* Productos */
+        #productos {
+            background: var(--color-white);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .product-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            background: var(--color-white);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.15);
+        }
+
+        .product-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-info h4 {
+            font-size: 1.3rem;
+            color: var(--color-secondary);
+            margin-bottom: 8px;
+        }
+
+        .product-info p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+            flex: 1;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-precio {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+
+        .btn-comprar {
+            background: var(--color-primary);
+            color: var(--color-dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            white-space: nowrap;
+        }
+
+        .btn-comprar:hover {
+            background: var(--color-secondary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Servicios */
+        #servicios {
+            background: #f8f9fa;
+        }
+
+        .service-card {
+            background: var(--color-white);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .service-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--color-dark);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(237, 232, 208, 0.3);
+        }
+
+        .service-card:hover .service-icon {
+            background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%);
+            color: var(--color-white);
+            transform: rotate(360deg) scale(1.1);
+            box-shadow: 0 15px 40px rgba(96, 113, 120, 0.4);
+        }
+
+        .service-card h4 {
+            font-size: 1.8rem;
+            color: var(--color-secondary);
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: #555;
+            line-height: 1.8;
+        }
+
+
+        /* Contacto */
+
+        #contacto {
+            background: var(--color-white);
+        }
+
+        .contact-info {
+            background: var(--color-secondary);
+            color: var(--color-white);
+            padding: 50px;
+            border-radius: 15px;
+            height: 100%;
+        }
+
+        .contact-info h3 {
+            color: var(--color-white);
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .info-icon {
+            font-size: 2rem;
+            color: var(--color-primary);
+            margin-right: 20px;
+            min-width: 40px;
+        }
+
+        .info-text h5 {
+            color: var(--color-primary);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .info-text p {
+            color: rgba(255,255,255,0.9);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            background: #f8f9fa;
+            padding: 50px;
+            border-radius: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--color-secondary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control {
+            border: 2px solid transparent;
+            background: var(--color-white);
+            padding: 12px 20px;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .form-control:focus {
+            border-color: var(--color-primary);
+            outline: none;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .btn-submit {
+            background: var(--color-primary);
+            color: var(--color-dark);
+            padding: 15px 50px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background: var(--color-secondary);
+            color: var(--color-white);
+        }
+
+        .map-container {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 250px;
+            border: none;
+        }
+
+
+        /* WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            background-color: #128C7E;
+            transform: scale(1.1);
+            color: #FFF;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-dark);
+            color: var(--color-primary);
+            padding: 50px 0 30px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+            color: var(--color-primary);
+        }
+
+        .social-links {
+            margin: 20px 0;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            background: var(--color-primary);
+            color: var(--color-dark);
+            border-radius: 50%;
+            margin: 0 8px;
+            line-height: 45px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--color-white);
+            transform: translateY(-5px);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .contact-info, .contact-form {
+                padding: 30px;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content-carrito {
+                max-width: 100% !important;
+                width: 100%;
+            }
+
+            .product-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn-comprar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#inicio">🥐🥖 El Artesano</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#inicio">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sobre-nosotros">Sobre Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#productos">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#cursos">Cursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacto">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn-carrito" id="btnCarrito" onclick="mostrarCarrito()">
+                            <i class="ri-shopping-cart-fill"></i>
+                            <span class="badge-carrito" id="badgeCarrito">0</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Imagen de fondo del hero -->
+    <img src="/img/manodelpanadero3.png" alt="Panadería El Artesano" class="hero-background-image">
+    
+    <!-- Overlay de gradientes -->
+    <div class="hero-overlay"></div>
+
+    <!-- Hero Section -->
+    <section id="inicio">
+        <button class="btn-fullscreen" onclick="toggleFullscreen()" title="Ver en pantalla completa">
+            <i class="ri-fullscreen-line"></i>
+        </button>
+        <div class="hero-content">
+            <h1>El Artesano</h1>
+            <p>Sabores auténticos horneados con amor. <br>Descubre la verdadera esencia de la panadería artesanal.</p>
+            <a href="#productos" class="btn-primary-custom">Ver Productos</a>
+        </div>
+    </section>
+
+    <!-- Sobre Nosotros -->
+    <section id="sobre-nosotros">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Sobre Nosotros</h2>
+                <p>Una historia de tradición, pasión y dedicación</p>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                    <div class="about-image">
+                        <img src="/img/team.jpg" alt="Historia de la panadería">
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="about-content">
+                        <h3>Nuestra Historia</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio corporis atque dolor tenetur ut nemo non, distinctio suscipit provident laborum officia voluptatibus neque alias doloribus numquam dolorum dolores! Eos, ullam.</p>
+                        <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione dicta ad facere itaque beatae adipisci. Eaque eos praesentium perferendis, adipisci enim sequi cupiditate labore quod, consequatur tenetur, voluptates mollitia minus!</p> -->
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae debitis dignissimos ipsa excepturi, amet maiores quas, autem id consequatur, suscipit blanditiis minima illum quod distinctio sint ad minus a dolores?</p>
+                        
+                        <div class="feature-box" data-aos="fade-up" data-aos-delay="100">
+                            <div class="feature-icon">
+                                <i class="ri-leaf-fill"></i>
+                            </div>
+                            <div>
+                                <h5>Ingredientes Naturales</h5>
+                                <p>Seleccionamos cuidadosamente las mejores materias primas</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-box" data-aos="fade-up" data-aos-delay="200">
+                            <div class="feature-icon">
+                                <i class="ri-time-fill"></i>
+                            </div>
+                            <div>
+                                <h5>Horneado Diario</h5>
+                                <p>Productos frescos elaborados cada día para garantizar calidad</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Productos -->
+    <section id="productos">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Nuestros Productos</h2>
+                <p>Variedad artesanal elaborada diariamente con ingredientes de primera calidad</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="product-image">
+                        <img src="/img/torta.jpg" alt="Tortas Artesanales">
+                    </div>
+                    <div class="product-info">
+                        <h4>Tortas Artesanales</h4>
+                        <p>Exquisitas tortas para cada ocasión especial, elaboradas con ingredientes premium</p>
+                        <div class="product-footer">
+                            <span class="product-precio">$450</span>
+                            <button class="btn-comprar" onclick="agregarAlCarrito('Torta Artesanal', 450)">
+                                <i class="ri-shopping-cart-2-line"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600" alt="Panes Artesanales">
+                    </div>
+                    <div class="product-info">
+                        <h4>Panes Artesanales</h4>
+                        <p>Variedad de panes tradicionales y especiales, horneados diariamente</p>
+                        <div class="product-footer">
+                            <span class="product-precio">$120</span>
+                            <button class="btn-comprar" onclick="agregarAlCarrito('Pan Artesanal', 120)">
+                                <i class="ri-shopping-cart-2-line"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="product-image">
+                        <img src="/img/sandwich-miga.jpg" alt="Sándwiches de Miga">
+                    </div>
+                    <div class="product-info">
+                        <h4>Sándwiches de Miga</h4>
+                        <p>Frescos y deliciosos para tus eventos y reuniones especiales</p>
+                        <div class="product-footer">
+                            <span class="product-precio">$85</span>
+                            <button class="btn-comprar" onclick="agregarAlCarrito('Sándwich de Miga', 85)">
+                                <i class="ri-shopping-cart-2-line"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600" alt="Facturas">
+                    </div>
+                    <div class="product-info">
+                        <h4>Facturas</h4>
+                        <p>Medialunas, vigilantes y más delicias para acompañar tu café matutino</p>
+                        <div class="product-footer">
+                            <span class="product-precio">$65</span>
+                            <button class="btn-comprar" onclick="agregarAlCarrito('Facturas', 65)">
+                                <i class="ri-shopping-cart-2-line"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="500">
+                    <div class="product-image">
+                        <img src="/img/masas secas.jpg" alt="Masas Finas">
+                    </div>
+                    <div class="product-info">
+                        <h4>Masas Secas</h4>
+                        <p>Dulces tentaciones para acompañar tu café, galletas y más</p>
+                        <div class="product-footer">
+                            <span class="product-precio">$95</span>
+                            <button class="btn-comprar" onclick="agregarAlCarrito('Masas Secas', 95)">
+                                <i class="ri-shopping-cart-2-line"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-aos="zoom-in" data-aos-delay="600">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=600" alt="Especialidades">
+                    </div>
+                    <div class="product-info">
+                        <h4>Especialidades</h4>
+                        <p>Creaciones únicas y limitadas, especialmente diseñadas para sorprenderte</p>
+                        <div class="product-footer">
+                            <span class="product-precio">$200</span>
+                            <button class="btn-comprar" onclick="agregarAlCarrito('Especialidad', 200)">
+                                <i class="ri-shopping-cart-2-line"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cursos -->
+    <section id="cursos" style="background: #f8f9fa; padding: 5rem 0;">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Cursos de Panadería</h2>
+                <p>Aprende el arte de la panadería artesanal con nuestros cursos especializados</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up">
+                    <div class="product-card">
+                        <div class="product-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <i class="ri-book-open-line" style="font-size: 4rem; color: white;"></i>
+                        </div>
+                        <div class="product-info">
+                            <span class="badge bg-primary mb-2">Principiante</span>
+                            <h4>Panadería Básica</h4>
+                            <p>Domina las técnicas fundamentales de la panadería artesanal desde cero</p>
+                            <div class="mb-2" style="font-size: 0.9rem; color: #6c757d;">
+                                <i class="ri-time-line"></i> 4 semanas &nbsp;
+                                <i class="ri-play-circle-line"></i> 12 lecciones
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-precio">$4,500</span>
+                                <a href="/cursos.html" class="btn-comprar">
+                                    <i class="ri-eye-line"></i> Ver curso
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="product-card">
+                        <div class="product-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <i class="ri-book-2-line" style="font-size: 4rem; color: white;"></i>
+                        </div>
+                        <div class="product-info">
+                            <span class="badge bg-warning mb-2">Intermedio</span>
+                            <h4>Pan de Masa Madre</h4>
+                            <p>Aprende a crear y mantener tu propia masa madre para panes artesanales únicos</p>
+                            <div class="mb-2" style="font-size: 0.9rem; color: #6c757d;">
+                                <i class="ri-time-line"></i> 6 semanas &nbsp;
+                                <i class="ri-play-circle-line"></i> 18 lecciones
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-precio">$6,800</span>
+                                <a href="/cursos.html" class="btn-comprar">
+                                    <i class="ri-eye-line"></i> Ver curso
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="product-card">
+                        <div class="product-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <i class="ri-medal-line" style="font-size: 4rem; color: white;"></i>
+                        </div>
+                        <div class="product-info">
+                            <span class="badge bg-danger mb-2">Avanzado</span>
+                            <h4>Panadería Profesional</h4>
+                            <p>Técnicas avanzadas, recetas exclusivas y secretos del oficio profesional</p>
+                            <div class="mb-2" style="font-size: 0.9rem; color: #6c757d;">
+                                <i class="ri-time-line"></i> 8 semanas &nbsp;
+                                <i class="ri-play-circle-line"></i> 24 lecciones
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-precio">$9,500</span>
+                                <a href="/cursos.html" class="btn-comprar">
+                                    <i class="ri-eye-line"></i> Ver curso
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4" data-aos="fade-up">
+                <a href="/cursos.html" class="btn" style="background: var(--color-primary); color: var(--color-dark); padding: 12px 40px; border-radius: 25px; text-decoration: none; font-weight: 600;">
+                    Ver todos los cursos <i class="ri-arrow-right-line"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+     <section id="contacto">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Contacto</h2>
+                <p>Estamos aquí para atenderte</p>
+            </div>
+            <div class="row mb-5">
+                <div class="col-lg-4 mb-4 mb-lg-0" data-aos="fade-right">
+                    <div class="contact-info">
+                        <h3>Información</h3>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="ri-map-pin-fill"></i></div>
+                            <div class="info-text">
+                                <h5>Dirección</h5>
+                                <p>Av. Vélez Sarsfield 28, Villa Madero<br>Provincia de Buenos Aires</p>
+                            </div>
+                        </div>
+                        <!-- <div class="info-item">
+                            <div class="info-icon"><i class="ri-phone-fill"></i></div>
+                            <div class="info-text">
+                                <h5>Teléfono</h5>
+                                <p>+54 11 1234-5678</p>
+                            </div>
+                        </div> -->
+                        <div class="info-item">
+                            <div class="info-icon"><i class="ri-time-fill"></i></div>
+                            <div class="info-text">
+                                <h5>Horario</h5>
+                                <p>Lun-Vie: 7:00-20:00<br>Sáb: 8:00-14:00</p>
+                            </div>
+                        </div>
+                        
+                        <div class="map-container">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.3044008842257!2d-58.50909122341416!3d-34.69750146245869!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcc91b13876a4d%3A0x15a0e3dc7066f1a0!2sEl%20Artesano!5e0!3m2!1ses!2sar!4v1760039393320!5m2!1ses!2sar" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8 mb-4 mb-lg-0" data-aos="fade-left">
+                    <div class="contact-form">
+                        <h3 style="color: var(--color-secondary); margin-bottom: 30px;">Envíanos un Mensaje</h3>
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" placeholder="Tu nombre">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" placeholder="tu@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Mensaje</label>
+                            <textarea class="form-control" placeholder="Escribe tu mensaje"></textarea>
+                        </div>
+                        <button class="btn-submit">Enviar Mensaje</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <div id="modalCarrito" class="modal-carrito" onclick="cerrarCarritoAlClickFuera(event)">
+        <div class="modal-content-carrito">
+            <div class="modal-header-carrito">
+                <h2>Mi Carrito</h2>
+                <button class="btn-cerrar" onclick="cerrarCarrito()">✕</button>
+            </div>
+            <div class="carrito-items" id="carritoItems">
+                <div class="carrito-vacio">
+                    <i class="ri-shopping-cart-fill"></i>
+                    <p>Tu carrito está vacío</p>
+                </div>
+            </div>
+            <div class="carrito-resumen">
+                <div class="resumen-fila">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0</span>
+                </div>
+                <div class="resumen-fila">
+                    <span>Envío:</span>
+                    <span id="envio">$0</span>
+                </div>
+                <div class="resumen-fila total">
+                    <span>Total:</span>
+                    <span id="total">$0</span>
+                </div>
+                <button class="btn-checkout" id="btnCheckout" onclick="irACheckout()" disabled>
+                    Proceder al Pago
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulario de Checkout (Modal) -->
+    <div id="modalCheckout" class="modal-carrito" style="display: none;" onclick="cerrarCheckoutAlClickFuera(event)">
+        <div class="modal-content-carrito" style="max-width: 600px;">
+            <div class="modal-header-carrito">
+                <h2>Finalizar Compra</h2>
+                <button class="btn-cerrar" onclick="cerrarCheckout()">✕</button>
+            </div>
+            <div style="flex: 1; overflow-y: auto;">
+                <form id="checkoutForm" style="padding: 20px 0;">
+                    <h4 style="color: var(--color-secondary); margin-bottom: 15px;">Datos Personales</h4>
+                    <div class="form-group">
+                        <label>Nombre Completo *</label>
+                        <input type="text" class="form-control" id="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono *</label>
+                        <input type="tel" class="form-control" id="telefono" required>
+                    </div>
+
+                    <h4 style="color: var(--color-secondary); margin: 20px 0 15px;">Dirección de Entrega</h4>
+                    <div class="form-group">
+                        <label>Dirección *</label>
+                        <input type="text" class="form-control" id="direccion" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ciudad *</label>
+                                <input type="text" class="form-control" id="ciudad" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Código Postal *</label>
+                                <input type="text" class="form-control" id="codigoPostal" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 style="color: var(--color-secondary); margin: 20px 0 15px;">Método de Pago</h4>
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="radio" name="metodo-pago" value="transferencia" checked style="margin-right: 10px;">
+                            Transferencia Bancaria
+                        </label>
+                        <label style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="radio" name="metodo-pago" value="mercadopago" style="margin-right: 10px;">
+                            Mercado Pago
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="radio" name="metodo-pago" value="efectivo" style="margin-right: 10px;">
+                            Efectivo en Entrega
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" id="terminos" required style="margin-right: 10px;">
+                            Acepto los términos y condiciones
+                        </label>
+                    </div>
+                </form>
+
+                <div style="background: var(--color-light); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                    <div class="resumen-fila">
+                        <span>Total:</span>
+                        <span id="totalCheckout">$0</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-checkout" onclick="finalizarCompra()" style="margin-top: 15px;">
+                Confirmar Pedido
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://facebook.com" target="_blank"><i class="ri-facebook-fill"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="ri-instagram-fill"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="ri-twitter-fill"></i></a>
+            </div>
+            <p>&copy; 2025 El Artesano - Panadería Artesanal. Todos los derechos reservados.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Hecho con <span style="color: var(--color-primary);">❤</span> en Buenos Aires</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/5491112345678?text=Hola!%20Quisiera%20hacer%20una%20consulta" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">
+        <i class="ri-whatsapp-fill"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        // Configuración del API Backend (mismo servidor)
+        window.API_BASE = '';
+        
+        // Sistema de Carrito de Compras
+        let carrito = [];
+        const COSTO_ENVIO = 50;
+
+        // Cargar carrito del localStorage
+        function cargarCarrito() {
+            const carritoGuardado = localStorage.getItem('carrito');
+            if (carritoGuardado) {
+                carrito = JSON.parse(carritoGuardado);
+                actualizarCarrito();
+            }
+        }
+
+        // Guardar carrito en localStorage
+        function guardarCarrito() {
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+        }
+
+        // Agregar producto al carrito
+        function agregarAlCarrito(nombre, precio) {
+            const productoExistente = carrito.find(item => item.nombre === nombre);
+            
+            if (productoExistente) {
+                productoExistente.cantidad++;
+            } else {
+                carrito.push({
+                    nombre: nombre,
+                    precio: precio,
+                    cantidad: 1,
+                    id: Date.now()
+                });
+            }
+            
+            guardarCarrito();
+            actualizarCarrito();
+            mostrarNotificacion(nombre + ' agregado al carrito');
+        }
+
+        // Actualizar cantidad de producto
+        function actualizarCantidad(id, nuevaCantidad) {
+            if (nuevaCantidad <= 0) {
+                eliminarDelCarrito(id);
+                return;
+            }
+            const producto = carrito.find(item => item.id === id);
+            if (producto) {
+                producto.cantidad = nuevaCantidad;
+                guardarCarrito();
+                actualizarCarrito();
+            }
+        }
+
+        // Eliminar producto del carrito
+        function eliminarDelCarrito(id) {
+            carrito = carrito.filter(item => item.id !== id);
+            guardarCarrito();
+            actualizarCarrito();
+        }
+
+        // Actualizar vista del carrito
+        function actualizarCarrito() {
+            const carritoItems = document.getElementById('carritoItems');
+            const badgeCarrito = document.getElementById('badgeCarrito');
+            
+            badgeCarrito.textContent = carrito.length;
+
+            if (carrito.length === 0) {
+                carritoItems.innerHTML = `
+                    <div class="carrito-vacio">
+                        <i class="ri-shopping-cart-fill"></i>
+                        <p>Tu carrito está vacío</p>
+                    </div>
+                `;
+                document.getElementById('btnCheckout').disabled = true;
+                actualizarTotales();
+                return;
+            }
+
+            document.getElementById('btnCheckout').disabled = false;
+
+            carritoItems.innerHTML = carrito.map(item => `
+                <div class="carrito-item">
+                    <div class="carrito-item-info">
+                        <div class="carrito-item-nombre">${item.nombre}</div>
+                        <div class="carrito-item-cantidad">
+                            <button onclick="actualizarCantidad(${item.id}, ${item.cantidad - 1})">−</button>
+                            <input type="number" value="${item.cantidad}" onchange="actualizarCantidad(${item.id}, this.value)">
+                            <button onclick="actualizarCantidad(${item.id}, ${item.cantidad + 1})">+</button>
+                        </div>
+                        <div class="carrito-item-precio">$${(item.precio * item.cantidad).toFixed(2)}</div>
+                    </div>
+                    <button class="btn-eliminar" onclick="eliminarDelCarrito(${item.id})">Eliminar</button>
+                </div>
+            `).join('');
+
+            actualizarTotales();
+        }
+
+        // Actualizar totales
+        function actualizarTotales() {
+            const subtotal = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            const envio = carrito.length > 0 ? COSTO_ENVIO : 0;
+            const total = subtotal + envio;
+
+            document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('envio').textContent = '$' + envio.toFixed(2);
+            document.getElementById('total').textContent = '$' + total.toFixed(2);
+            document.getElementById('totalCheckout').textContent = '$' + total.toFixed(2);
+        }
+
+        // Mostrar/Cerrar carrito
+        function mostrarCarrito() {
+            document.getElementById('modalCarrito').classList.add('show');
+        }
+
+        function cerrarCarrito() {
+            document.getElementById('modalCarrito').classList.remove('show');
+        }
+
+        function cerrarCarritoAlClickFuera(event) {
+            if (event.target.id === 'modalCarrito') {
+                cerrarCarrito();
+            }
+        }
+
+        // Ir a checkout
+        function irACheckout() {
+            if (carrito.length === 0) return;
+            cerrarCarrito();
+            document.getElementById('modalCheckout').style.display = 'flex';
+        }
+
+        function cerrarCheckout() {
+            document.getElementById('modalCheckout').style.display = 'none';
+        }
+
+        function cerrarCheckoutAlClickFuera(event) {
+            if (event.target.id === 'modalCheckout') {
+                cerrarCheckout();
+            }
+        }
+
+        // Finalizar compra (crea orden en backend y, si corresponde, redirige a Mercado Pago)
+        async function finalizarCompra() {
+            const form = document.getElementById('checkoutForm');
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const direccion = document.getElementById('direccion').value;
+            const ciudad = document.getElementById('ciudad').value;
+            const codigoPostal = document.getElementById('codigoPostal').value;
+            const metodo = document.querySelector('input[name="metodo-pago"]:checked').value;
+
+            if (carrito.length === 0) {
+                alert('Tu carrito está vacío');
+                return;
+            }
+
+            // Construir payload de orden
+            const itemsPayload = carrito.map(item => ({
+                producto_id: item.id || null,
+                producto_nombre: item.nombre,
+                producto_tipo: item.tipo || 'producto', // 'curso' o 'producto'
+                cantidad: item.cantidad,
+                precio_unitario: item.precio
+            }));
+
+            const payload = {
+                cliente_nombre: nombre,
+                cliente_email: email,
+                cliente_telefono: telefono,
+                direccion_entrega: direccion,
+                ciudad: ciudad,
+                codigo_postal: codigoPostal,
+                notas: '',
+                metodo_pago: metodo,
+                items: itemsPayload,
+                costo_envio: COSTO_ENVIO
+            };
+
+            try {
+                // Crear orden en backend
+                const resp = await fetch((window.API_BASE || '') + '/api/ordenes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!resp.ok) {
+                    const errorText = await resp.text();
+                    console.error('Error response:', errorText);
+                    throw new Error(`Error del servidor (${resp.status}): ${errorText}`);
+                }
+
+                const responseText = await resp.text();
+                console.log('Response:', responseText);
+                
+                if (!responseText) {
+                    throw new Error('Respuesta vacía del servidor');
+                }
+
+                const data = JSON.parse(responseText);
+                const { orden_id, numero_orden, total } = data.data || {};
+
+                // Si el método es Mercado Pago, crear preferencia y redirigir
+                if (metodo === 'mercadopago') {
+                    const prefResp = await fetch((window.API_BASE || '') + '/api/pagos/preferencia', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ orden_id, payer: { email, name: nombre, phone: telefono } })
+                    });
+
+                    const prefData = await prefResp.json();
+                    if (!prefResp.ok) throw new Error(prefData.message || 'Error creando preferencia de pago');
+
+                    // Redirigir al checkout de Mercado Pago
+                    window.location.href = prefData.init_point;
+                    return; // no limpiar carrito todavía; webhook confirmará
+                }
+
+                // Para otros métodos (efectivo/transferencia) mostramos confirmación
+                if (metodo === 'transferencia') {
+                    // Redirigir a página de datos bancarios
+                    window.location.href = `pago-transferencia.html?orden_id=${orden_id}&numero=${numero_orden}&total=${total}`;
+                    return;
+                }
+                
+                // Para efectivo
+                carrito = [];
+                guardarCarrito();
+                actualizarCarrito();
+                form.reset();
+                cerrarCheckout();
+
+                alert(`¡Pedido #${numero_orden} creado! Pagarás en efectivo al recibir tu pedido.`);
+
+            } catch (error) {
+                console.error('Error al finalizar compra:', error);
+                alert('Ocurrió un error procesando la orden: ' + (error.message || 'Intenta nuevamente'));
+            }
+        }
+
+        // Notificaciones
+        function mostrarNotificacion(mensaje) {
+            const notif = document.createElement('div');
+            notif.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--color-primary);
+                color: var(--color-dark);
+                padding: 15px 25px;
+                border-radius: 50px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
+            `;
+            notif.textContent = mensaje;
+            document.body.appendChild(notif);
+
+            setTimeout(() => {
+                notif.remove();
+            }, 3000);
+        }
+
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Active nav link on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    const targetPosition = target.offsetTop - navbarHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const navbarCollapse = document.querySelector('.navbar-collapse');
+                    if (navbarCollapse.classList.contains('show')) {
+                        navbarCollapse.classList.remove('show');
+                    }
+                }
+            });
+        });
+
+        // Función para pantalla completa
+        function toggleFullscreen() {
+            const heroSection = document.getElementById('inicio');
+            const heroImage = document.querySelector('.hero-background-image');
+            const heroOverlay = document.querySelector('.hero-overlay');
+            const navbar = document.querySelector('.navbar');
+            
+            if (!heroSection.classList.contains('fullscreen-mode')) {
+                // Entrar en pantalla completa
+                heroSection.classList.add('fullscreen-mode');
+                heroImage.classList.add('fullscreen-mode');
+                heroOverlay.classList.add('fullscreen-mode');
+                navbar.style.display = 'none';
+                document.body.style.overflow = 'hidden';
+                
+                // Cambiar icono
+                const icon = document.querySelector('.btn-fullscreen i');
+                icon.className = 'ri-fullscreen-exit-line';
+            } else {
+                // Salir de pantalla completa
+                heroSection.classList.remove('fullscreen-mode');
+                heroImage.classList.remove('fullscreen-mode');
+                heroOverlay.classList.remove('fullscreen-mode');
+                navbar.style.display = 'block';
+                document.body.style.overflow = 'auto';
+                
+                // Cambiar icono
+                const icon = document.querySelector('.btn-fullscreen i');
+                icon.className = 'ri-fullscreen-line';
+            }
+        }
+
+        // Cerrar pantalla completa con tecla ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const heroSection = document.getElementById('inicio');
+                if (heroSection.classList.contains('fullscreen-mode')) {
+                    toggleFullscreen();
+                }
+            }
+        });
+
+        // Inicializar carrito al cargar
+        window.addEventListener('DOMContentLoaded', cargarCarrito);
+    </script>
+</body>
+</html>

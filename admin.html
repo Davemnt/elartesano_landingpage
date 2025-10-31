@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - El Artesano</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #000000;
+            --color-secondary: #2d2d2d;
+            --color-dark: #1a1a1a;
+            --color-light: #f5f5f5;
+            --color-accent: #666666;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            overflow-y: auto;
+            border-right: 1px solid #333;
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid #333;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-brand h3 {
+            color: #ffffff;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .sidebar-brand p {
+            color: #999;
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border-left: 4px solid #ffffff;
+        }
+
+        .sidebar-menu a i {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .admin-header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            color: var(--color-dark);
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            border: 2px solid #e0e0e0;
+        }
+
+        /* Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.blue { background: linear-gradient(135deg, #000000 0%, #2d2d2d 100%); color: white; }
+        .stat-icon.green { background: linear-gradient(135deg, #2d2d2d 0%, #4a4a4a 100%); color: white; }
+        .stat-icon.orange { background: linear-gradient(135deg, #4a4a4a 0%, #666666 100%); color: white; }
+        .stat-icon.purple { background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%); color: white; }
+
+        .stat-info h3 {
+            margin: 0;
+            font-size: 2rem;
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+
+        .stat-info p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Content Card */
+        .content-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .content-card h2 {
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Table */
+        .table {
+            margin: 0;
+        }
+
+        .table thead th {
+            border-top: none;
+            border-bottom: 2px solid #e0e0e0;
+            font-weight: 600;
+            color: #1a1a1a;
+            background: #fafafa;
+        }
+
+        .table tbody tr:hover {
+            background: #f9f9f9;
+        }
+
+        .badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .badge.bg-success { background: #2d2d2d !important; }
+        .badge.bg-warning { background: #666666 !important; }
+        .badge.bg-info { background: #4a4a4a !important; }
+        .badge.bg-secondary { background: #999999 !important; }
+
+        .btn-primary {
+            background: #000000;
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2d2d2d;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #666666;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background: #4a4a4a;
+        }
+
+        .btn-success {
+            background: #2d2d2d !important;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: #1a1a1a !important;
+        }
+
+        .btn-danger {
+            background: #666666 !important;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background: #4a4a4a !important;
+        }
+
+        .btn-warning {
+            background: #999999 !important;
+            border: none;
+            color: white !important;
+        }
+
+        .btn-warning:hover {
+            background: #7a7a7a !important;
+        }
+
+        .btn-info {
+            background: #4a4a4a !important;
+            border: none;
+        }
+
+        .btn-info:hover {
+            background: #333333 !important;
+        }
+
+        /* Modales */
+        .modal-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            border-bottom: none;
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1);
+        }
+
+        .modal-footer {
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Inputs */
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #2d2d2d;
+            box-shadow: 0 0 0 0.2rem rgba(45, 45, 45, 0.25);
+        }
+
+        .form-label {
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        /* Login Modal */
+        .modal-content {
+            border: none;
+            border-radius: 15px;
+        }
+
+        /* Alert */
+        .alert {
+            border-radius: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <h3>🥖 El Artesano</h3>
+            <p>Panel de Administración</p>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active" data-section="dashboard"><i class="ri-dashboard-line"></i> Dashboard</a></li>
+            <li><a href="#" data-section="productos"><i class="ri-shopping-bag-line"></i> Productos</a></li>
+            <li><a href="#" data-section="cursos"><i class="ri-book-line"></i> Cursos</a></li>
+            <li><a href="#" data-section="ordenes"><i class="ri-file-list-line"></i> Órdenes</a></li>
+            <li><a href="#" data-section="clientes"><i class="ri-user-line"></i> Clientes</a></li>
+            <li><a href="#" data-section="configuracion"><i class="ri-settings-line"></i> Configuración</a></li>
+            <li><a href="/"><i class="ri-home-line"></i> Volver al sitio</a></li>
+            <li><a href="#" onclick="cerrarSesion()"><i class="ri-logout-box-line"></i> Cerrar Sesión</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <div class="admin-header">
+            <h1>Dashboard</h1>
+            <div class="user-info">
+                <div>
+                    <strong>Administrador</strong>
+                    <p class="text-muted mb-0" style="font-size: 0.85rem;">
+                        <button class="btn btn-sm btn-outline-danger" onclick="cerrarSesion()" style="font-size: 0.75rem;">
+                            <i class="ri-logout-box-line"></i> Cerrar Sesión
+                        </button>
+                    </p>
+                </div>
+                <div class="user-avatar">A</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="ri-shopping-cart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-ordenes">0</h3>
+                        <p>Órdenes Totales</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="ri-money-dollar-circle-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-ventas">$0</h3>
+                        <p>Ventas del Mes</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="ri-shopping-bag-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-productos">0</h3>
+                        <p>Productos Activos</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="ri-user-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="stat-clientes">0</h3>
+                        <p>Clientes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Órdenes Recientes -->
+            <div class="content-card">
+                <h2>
+                    <span>Órdenes Recientes</span>
+                    <button class="btn btn-primary btn-sm" onclick="verTodasOrdenes()">
+                        <i class="ri-eye-line"></i> Ver todas
+                    </button>
+                </h2>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordenes-recientes">
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Productos Section -->
+        <div id="productos-section" style="display: none;">
+            <div class="content-card">
+                <h2>
+                    <span>Gestión de Productos</span>
+                    <button class="btn btn-primary" onclick="modalNuevoProducto()">
+                        <i class="ri-add-line"></i> Nuevo Producto
+                    </button>
+                </h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productos-lista">
+                            <tr>
+                                <td colspan="6" class="text-center py-4">Cargando productos...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cursos Section -->
+        <div id="cursos-section" style="display: none;">
+            <div class="content-card">
+                <h2>
+                    <span>Gestión de Cursos</span>
+                    <button class="btn btn-primary" onclick="modalNuevoCurso()">
+                        <i class="ri-add-line"></i> Nuevo Curso
+                    </button>
+                </h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Precio</th>
+                                <th>Alumnos</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cursos-lista">
+                            <tr>
+                                <td colspan="6" class="text-center py-4">Cargando cursos...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Órdenes Section -->
+        <div id="ordenes-section" style="display: none;">
+            <div class="content-card">
+                <h2>
+                    <span>Todas las Órdenes</span>
+                    <div>
+                        <select class="form-select form-select-sm d-inline-block w-auto" id="filtro-estado" onchange="filtrarOrdenes()">
+                            <option value="">Todos los estados</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="pagado">Pagado</option>
+                            <option value="preparando">Preparando</option>
+                            <option value="enviado">Enviado</option>
+                            <option value="entregado">Entregado</option>
+                            <option value="cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                </h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordenes-todas">
+                            <tr>
+                                <td colspan="7" class="text-center py-4">Cargando órdenes...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuración Section -->
+        <div id="configuracion-section" style="display: none;">
+            <div class="content-card">
+                <h2><i class="ri-settings-line"></i> Configuración del Sistema</h2>
+                
+                <!-- Cambiar Contraseña -->
+                <div class="mb-4">
+                    <h5 class="mb-3"><i class="ri-lock-password-line"></i> Seguridad</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Cambiar Contraseña de Administrador</h6>
+                            <p class="text-muted small">Protege tu panel de administración con una contraseña segura</p>
+                            
+                            <form id="form-cambiar-password">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Contraseña Actual</label>
+                                        <input type="password" class="form-control" id="password-actual" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nueva Contraseña</label>
+                                        <input type="password" class="form-control" id="password-nueva" required minlength="6">
+                                        <small class="text-muted">Mínimo 6 caracteres</small>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="ri-save-line"></i> Cambiar Contraseña
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información del Sistema -->
+                <div class="mb-4">
+                    <h5 class="mb-3"><i class="ri-information-line"></i> Información</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-borderless mb-0">
+                                <tr>
+                                    <td><strong>Versión:</strong></td>
+                                    <td>2.0.0</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Estado del Servidor:</strong></td>
+                                    <td><span class="badge bg-success">Activo</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Base de Datos:</strong></td>
+                                    <td id="db-status">Conectada</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>API Base:</strong></td>
+                                    <td><code>http://localhost:3000</code></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guías y Ayuda -->
+                <div class="mb-4">
+                    <h5 class="mb-3"><i class="ri-book-open-line"></i> Documentación</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title"><i class="ri-file-text-line"></i> Inicio Rápido</h6>
+                                    <p class="card-text small">Guía de 3 pasos para empezar</p>
+                                    <a href="INICIO_RAPIDO.md" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        Ver Guía
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title"><i class="ri-graduation-cap-line"></i> Subir Cursos</h6>
+                                    <p class="card-text small">Tutorial completo de cursos</p>
+                                    <a href="COMO_SUBIR_CURSOS.md" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        Ver Tutorial
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title"><i class="ri-database-line"></i> Supabase</h6>
+                                    <p class="card-text small">Configuración de base de datos</p>
+                                    <a href="GUIA_SUPABASE.md" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        Ver Guía
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acciones del Sistema -->
+                <div class="mb-4">
+                    <h5 class="mb-3"><i class="ri-tools-line"></i> Herramientas</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <h6 class="mb-1">Limpiar Caché del Navegador</h6>
+                                    <p class="text-muted small mb-0">Si ves datos antiguos, limpia la caché</p>
+                                </div>
+                                <button class="btn btn-outline-secondary" onclick="localStorage.clear(); location.reload();">
+                                    <i class="ri-delete-bin-line"></i> Limpiar
+                                </button>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">Configurar Integraciones</h6>
+                                    <p class="text-muted small mb-0">Mercado Pago, Email, WhatsApp</p>
+                                </div>
+                                <a href="#" class="btn btn-outline-primary" onclick="alert('Ejecuta: npm run setup\nen la terminal')">
+                                    <i class="ri-terminal-line"></i> Ver Comando
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Nuevo Producto -->
+    <div class="modal fade" id="modal-nuevo-producto" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="ri-add-circle-line"></i> Nuevo Producto
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-nuevo-producto">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre del Producto *</label>
+                                    <input type="text" class="form-control" id="producto-nombre" required 
+                                           placeholder="Ej: Pan de Campo Artesanal">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Precio *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="producto-precio" required 
+                                               min="0" step="0.01" placeholder="0.00">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" id="producto-descripcion" rows="3" 
+                                      placeholder="Describe el producto, ingredientes, características especiales..."></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Categoría *</label>
+                                    <select class="form-select" id="producto-categoria" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="panes">Panes</option>
+                                        <option value="pasteles">Pasteles</option>
+                                        <option value="galletas">Galletas</option>
+                                        <option value="postres">Postres</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Stock Disponible *</label>
+                                    <input type="number" class="form-control" id="producto-stock" required 
+                                           min="0" value="0" placeholder="0">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">SKU (Código)</label>
+                                    <input type="text" class="form-control" id="producto-sku" 
+                                           placeholder="Ej: PAN-001">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">URL de la Imagen</label>
+                            <input type="url" class="form-control" id="producto-imagen" 
+                                   placeholder="https://ejemplo.com/imagen.jpg">
+                            <small class="text-muted">Puedes usar servicios como Imgur, Cloudinary o Supabase Storage</small>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="producto-activo" checked>
+                                    <label class="form-check-label" for="producto-activo">
+                                        Producto Activo (Visible en la tienda)
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="producto-destacado">
+                                    <label class="form-check-label" for="producto-destacado">
+                                        Producto Destacado (Aparece primero)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="guardarNuevoProducto()">
+                        <i class="ri-save-line"></i> Guardar Producto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Curso -->
+    <div class="modal fade" id="modal-nuevo-curso" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="ri-book-open-line"></i> Nuevo Curso
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-nuevo-curso">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Título del Curso *</label>
+                                    <input type="text" class="form-control" id="curso-titulo" required 
+                                           placeholder="Ej: Panadería Artesanal desde Cero">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Precio *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="curso-precio" required 
+                                               min="0" step="0.01" placeholder="0.00">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Descripción del Curso</label>
+                            <textarea class="form-control" id="curso-descripcion" rows="4" 
+                                      placeholder="Describe qué aprenderán los estudiantes, contenido del curso, beneficios..."></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Duración (horas) *</label>
+                                    <input type="number" class="form-control" id="curso-duracion" required 
+                                           min="0.5" step="0.5" value="1" placeholder="Ej: 10">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Nivel *</label>
+                                    <select class="form-select" id="curso-nivel" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="principiante">Principiante</option>
+                                        <option value="intermedio">Intermedio</option>
+                                        <option value="avanzado">Avanzado</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Categoría</label>
+                                    <select class="form-select" id="curso-categoria">
+                                        <option value="">Seleccionar...</option>
+                                        <option value="panaderia">Panadería</option>
+                                        <option value="reposteria">Repostería</option>
+                                        <option value="pasteleria">Pastelería</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Imagen de Portada (URL)</label>
+                            <input type="url" class="form-control" id="curso-imagen" 
+                                   placeholder="https://ejemplo.com/curso.jpg">
+                            <small class="text-muted">Imagen que se mostrará en la lista de cursos</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Video de Introducción (URL)</label>
+                            <input type="url" class="form-control" id="curso-video-intro" 
+                                   placeholder="https://www.youtube.com/watch?v=...">
+                            <small class="text-muted">YouTube, Vimeo o video directo (opcional)</small>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="curso-activo" checked>
+                                    <label class="form-check-label" for="curso-activo">
+                                        Curso Activo (Visible en la tienda)
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="curso-destacado">
+                                    <label class="form-check-label" for="curso-destacado">
+                                        Curso Destacado (Aparece primero)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="ri-information-line"></i> 
+                            <strong>Nota:</strong> Después de crear el curso, podrás agregar las lecciones desde la tabla de cursos haciendo clic en "Gestionar Lecciones".
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="guardarNuevoCurso()">
+                        <i class="ri-save-line"></i> Guardar Curso
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        console.log('✅ Script de admin.html cargado');
+        
+        // Configuración API
+        window.API_BASE = '';
+        let token = localStorage.getItem('admin_token');
+        
+        console.log('API_BASE:', window.API_BASE);
+        console.log('Token:', token);
+
+        // Verificar autenticación al cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('🎯 DOMContentLoaded - Verificando autenticación');
+            verificarAutenticacion();
+        });
+
+        function verificarAutenticacion() {
+            console.log('🔐 verificarAutenticacion() llamada');
+            const password = localStorage.getItem('admin_password');
+            console.log('Password guardada:', password);
+            
+            // Contraseña predeterminada (cambiar después)
+            const ADMIN_PASSWORD = 'admin123';
+            
+            if (password !== ADMIN_PASSWORD) {
+                console.log('❌ Password incorrecta o no existe - Mostrando login');
+                mostrarLoginModal();
+            } else {
+                console.log('✅ Password correcta - Inicializando admin panel');
+                inicializarAdmin();
+            }
+        }
+
+        function mostrarLoginModal() {
+            // Ocultar contenido principal
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            if (sidebar) sidebar.style.display = 'none';
+            if (mainContent) mainContent.style.display = 'none';
+            
+            const loginModal = document.createElement('div');
+            loginModal.className = 'modal fade';
+            loginModal.id = 'login-modal';
+            loginModal.setAttribute('data-bs-backdrop', 'static');
+            loginModal.setAttribute('data-bs-keyboard', 'false');
+            loginModal.innerHTML = `
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title">
+                                <i class="ri-lock-line"></i> Panel de Administración
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center mb-4">
+                                <i class="ri-admin-line" style="font-size: 48px; color: #8B4513;"></i>
+                                <h6 class="mt-3">Acceso Restringido</h6>
+                                <p class="text-muted small">Solo administradores autorizados</p>
+                            </div>
+                            
+                            <form id="login-form">
+                                <div class="mb-3">
+                                    <label class="form-label">Contraseña de Administrador</label>
+                                    <input type="password" class="form-control" id="admin-password-input" 
+                                           placeholder="Ingresa tu contraseña" required autofocus>
+                                    <small class="text-muted">
+                                        Contraseña predeterminada: <code>admin123</code>
+                                    </small>
+                                </div>
+                                
+                                <div id="login-error" class="alert alert-danger d-none">
+                                    <i class="ri-error-warning-line"></i> Contraseña incorrecta
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="ri-login-box-line"></i> Acceder
+                                </button>
+                            </form>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="alert alert-warning small">
+                                <strong><i class="ri-information-line"></i> Importante:</strong><br>
+                                Después de acceder, cambia la contraseña en la sección de Configuración.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(loginModal);
+            const modal = new bootstrap.Modal(loginModal);
+            modal.show();
+            
+            document.getElementById('login-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                intentarLogin();
+            });
+        }
+
+        function intentarLogin() {
+            const password = document.getElementById('admin-password-input').value;
+            const ADMIN_PASSWORD = 'admin123'; // Cambiar después
+            
+            if (password === ADMIN_PASSWORD) {
+                localStorage.setItem('admin_password', password);
+                
+                // Cerrar modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('login-modal'));
+                modal.hide();
+                
+                // Mostrar contenido
+                const sidebar = document.querySelector('.sidebar');
+                const mainContent = document.querySelector('.main-content');
+                if (sidebar) sidebar.style.display = 'block';
+                if (mainContent) mainContent.style.display = 'block';
+                
+                // Inicializar admin panel
+                console.log('✅ Login exitoso - Inicializando panel');
+                inicializarAdmin();
+                
+                // Mostrar mensaje de bienvenida
+                setTimeout(() => {
+                    alert('✅ Bienvenido al Panel de Administración\n\n⚠️ IMPORTANTE: Cambia tu contraseña en Configuración');
+                }, 500);
+            } else {
+                // Mostrar error
+                document.getElementById('login-error').classList.remove('d-none');
+                document.getElementById('admin-password-input').value = '';
+                document.getElementById('admin-password-input').focus();
+            }
+        }
+
+        function cerrarSesion() {
+            if (confirm('¿Cerrar sesión?')) {
+                localStorage.removeItem('admin_password');
+                location.reload();
+            }
+        }
+
+        // Navegación entre secciones (ahora en inicializarAdmin())
+
+        function cargarConfiguracion() {
+            // Configurar form de cambiar contraseña
+            const form = document.getElementById('form-cambiar-password');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    cambiarPassword();
+                });
+            }
+        }
+
+        function cambiarPassword() {
+            const passwordActual = document.getElementById('password-actual').value;
+            const passwordNueva = document.getElementById('password-nueva').value;
+            
+            const passwordGuardada = localStorage.getItem('admin_password');
+            
+            if (passwordActual !== passwordGuardada) {
+                alert('❌ La contraseña actual es incorrecta');
+                return;
+            }
+            
+            if (passwordNueva.length < 6) {
+                alert('❌ La nueva contraseña debe tener al menos 6 caracteres');
+                return;
+            }
+            
+            if (confirm('¿Cambiar contraseña?\n\n⚠️ Asegúrate de recordarla, no podrás recuperarla.')) {
+                localStorage.setItem('admin_password', passwordNueva);
+                alert('✅ Contraseña cambiada exitosamente');
+                document.getElementById('form-cambiar-password').reset();
+            }
+        }
+
+        // Cargar Dashboard
+        async function cargarDashboard() {
+            console.log('🎯 cargarDashboard() iniciado');
+            try {
+                // TODO: Implementar llamadas reales al API
+                document.getElementById('stat-ordenes').textContent = '45';
+                document.getElementById('stat-ventas').textContent = '$12,350';
+                document.getElementById('stat-productos').textContent = '28';
+                document.getElementById('stat-clientes').textContent = '156';
+                
+                console.log('🎯 Llamando a cargarOrdenesRecientes()');
+                cargarOrdenesRecientes();
+            } catch (error) {
+                console.error('Error cargando dashboard:', error);
+            }
+        }
+
+        async function cargarOrdenesRecientes() {
+            const tbody = document.getElementById('ordenes-recientes');
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></td></tr>';
+            
+            try {
+                const response = await fetch(`${window.API_BASE}/api/ordenes/admin/all?limite=5`);
+                const data = await response.json();
+                
+                if (!data.success || !data.data || data.data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No hay órdenes recientes</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = data.data.slice(0, 5).map(orden => {
+                    const estadoBadge = {
+                        'pendiente': 'secondary',
+                        'pendiente_pago': 'warning',
+                        'pagado': 'success',
+                        'preparacion': 'info',
+                        'enviado': 'primary',
+                        'entregado': 'success',
+                        'cancelado': 'danger'
+                    };
+                    
+                    return `
+                        <tr>
+                            <td><strong>${orden.numero_orden}</strong></td>
+                            <td>${orden.cliente_nombre}</td>
+                            <td>${new Date(orden.fecha_creacion).toLocaleDateString('es-AR')}</td>
+                            <td><strong>$${parseFloat(orden.total).toLocaleString('es-AR')}</strong></td>
+                            <td>
+                                <span class="badge bg-${estadoBadge[orden.estado] || 'secondary'}">
+                                    ${orden.estado.replace('_', ' ').toUpperCase()}
+                                </span>
+                                ${orden.metodo_pago === 'transferencia' ? '<small class="d-block text-muted">Transferencia</small>' : ''}
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-info" onclick="verDetalleOrden('${orden.id}')" title="Ver Detalles">
+                                    <i class="ri-eye-line"></i>
+                                </button>
+                                ${orden.estado === 'pendiente_pago' && orden.metodo_pago === 'transferencia' ? `
+                                    <button class="btn btn-sm btn-success" onclick="confirmarPago('${orden.id}')" title="Confirmar Pago">
+                                        <i class="ri-check-line"></i>
+                                    </button>
+                                ` : ''}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                // Actualizar estadísticas
+                const ordenesPendientes = data.data.filter(o => o.estado === 'pendiente_pago').length;
+                document.getElementById('stat-ordenes').textContent = ordenesPendientes;
+                
+            } catch (error) {
+                console.error('Error cargando órdenes:', error);
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-danger">Error al cargar órdenes</td></tr>';
+            }
+        }
+
+        async function verDetalleOrden(ordenId) {
+            try {
+                const headers = {};
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+                
+                const response = await fetch(`${window.API_BASE}/api/ordenes/${ordenId}`, { headers });
+                const data = await response.json();
+                
+                if (!data.success) {
+                    alert('Error al cargar detalles de la orden');
+                    return;
+                }
+                
+                const orden = data.data;
+                const modal = document.createElement('div');
+                modal.className = 'modal fade';
+                modal.id = 'modal-detalle-orden';
+                modal.innerHTML = `
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="ri-file-list-line"></i> Orden ${orden.numero_orden}
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <h6>Cliente</h6>
+                                        <p>${orden.cliente_nombre}<br>
+                                        ${orden.cliente_email}<br>
+                                        ${orden.cliente_telefono}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Entrega</h6>
+                                        <p>${orden.direccion_entrega}<br>
+                                        ${orden.ciudad}, ${orden.codigo_postal}</p>
+                                    </div>
+                                </div>
+                                
+                                <h6>Items</h6>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${orden.orden_items.map(item => `
+                                            <tr>
+                                                <td>${item.producto_nombre}</td>
+                                                <td>${item.cantidad}</td>
+                                                <td>$${parseFloat(item.precio_unitario).toLocaleString('es-AR')}</td>
+                                                <td>$${parseFloat(item.subtotal).toLocaleString('es-AR')}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                            <td><strong>$${parseFloat(orden.total).toLocaleString('es-AR')}</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <h6>Estado</h6>
+                                        <p><span class="badge bg-info">${orden.estado.toUpperCase()}</span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Método de Pago</h6>
+                                        <p>${orden.metodo_pago || 'No especificado'}</p>
+                                        ${orden.comprobante_url ? `<a href="${orden.comprobante_url}" target="_blank" class="btn btn-sm btn-outline-primary">Ver Comprobante</a>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                ${orden.estado === 'pendiente_pago' && orden.metodo_pago === 'transferencia' ? `
+                                    <button class="btn btn-success" onclick="confirmarPago('${orden.id}')">
+                                        <i class="ri-check-line"></i> Confirmar Pago
+                                    </button>
+                                ` : ''}
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                const bsModal = new bootstrap.Modal(modal);
+                bsModal.show();
+                
+                modal.addEventListener('hidden.bs.modal', () => {
+                    modal.remove();
+                });
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al cargar detalles de la orden');
+            }
+        }
+
+        async function confirmarPago(ordenId) {
+            if (!confirm('¿Confirmar que recibiste el pago de esta orden?')) return;
+            
+            try {
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+                
+                const response = await fetch(`${window.API_BASE}/api/ordenes/${ordenId}/confirmar-pago`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({
+                        notas_pago: 'Pago confirmado por administrador'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ Pago confirmado exitosamente');
+                    
+                    // Cerrar modal si está abierto
+                    const modalElement = document.getElementById('modal-detalle-orden');
+                    if (modalElement) {
+                        const modal = bootstrap.Modal.getInstance(modalElement);
+                        if (modal) modal.hide();
+                    }
+                    
+                    // Recargar órdenes
+                    cargarOrdenesRecientes();
+                } else {
+                    alert('❌ Error al confirmar pago: ' + (data.message || 'Error desconocido'));
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al confirmar el pago');
+            }
+        }
+
+        async function cargarProductos() {
+            const tbody = document.getElementById('productos-lista');
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></td></tr>';
+            
+            try {
+                const url = `${window.location.origin}/api/productos?t=${Date.now()}`;
+                console.log('🔍 Cargando productos desde:', url);
+                const response = await fetch(url);
+                console.log('✅ Response status:', response.status);
+                console.log('✅ Response headers:', response.headers.get('content-type'));
+                
+                const data = await response.json();
+                console.log('Productos recibidos:', data);
+                
+                if (!data.success || !data.data || data.data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr><td colspan="6" class="text-center py-4">
+                            <p>No hay productos. Crea tu primer producto.</p>
+                            ${data.modo === 'ejemplo' ? '<small class="text-muted">Modo ejemplo activo (Supabase no configurado)</small>' : ''}
+                        </td></tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = data.data.map(producto => `
+                    <tr>
+                        <td>#${producto.id ? producto.id.substring(0, 8) : 'N/A'}</td>
+                        <td>
+                            <strong>${producto.nombre}</strong><br>
+                            <small class="text-muted">${producto.categoria || 'Sin categoría'}</small>
+                        </td>
+                        <td><strong>$${parseFloat(producto.precio).toLocaleString('es-AR')}</strong></td>
+                        <td>${producto.stock || 0}</td>
+                        <td>
+                            <span class="badge bg-${producto.activo ? 'success' : 'secondary'}">
+                                ${producto.activo ? 'Activo' : 'Inactivo'}
+                            </span>
+                            ${producto.destacado ? '<span class="badge bg-warning ms-1">Destacado</span>' : ''}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="editarProducto('${producto.id}')" title="Editar">
+                                <i class="ri-edit-line"></i>
+                            </button>
+                            <button class="btn btn-sm btn-${producto.activo ? 'warning' : 'success'}" 
+                                    onclick="toggleActivoProducto('${producto.id}', ${!producto.activo})" 
+                                    title="${producto.activo ? 'Desactivar' : 'Activar'}">
+                                <i class="ri-${producto.activo ? 'eye-off' : 'eye'}-line"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarProducto('${producto.id}')" title="Eliminar">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+                
+                // Actualizar estadísticas
+                const productosActivos = data.data.filter(p => p.activo).length;
+                document.getElementById('stat-productos').textContent = productosActivos;
+                
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-danger">Error al cargar productos</td></tr>';
+            }
+        }
+
+        function editarProducto(id) {
+            alert('Funcionalidad de edición en desarrollo');
+        }
+
+        function toggleActivoProducto(id, nuevoEstado) {
+            alert('Funcionalidad en desarrollo');
+        }
+
+        function eliminarProducto(id) {
+            if (confirm('¿Eliminar este producto?')) {
+                alert('Funcionalidad en desarrollo');
+            }
+        }
+
+        async function cargarCursos() {
+            const tbody = document.getElementById('cursos-lista');
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></td></tr>';
+            
+            try {
+                const url = `${window.location.origin}/api/cursos?t=${Date.now()}`;
+                console.log('🔍 Cargando cursos desde:', url);
+                const response = await fetch(url);
+                console.log('✅ Response status:', response.status);
+                console.log('✅ Response headers:', response.headers.get('content-type'));
+                
+                const data = await response.json();
+                console.log('Cursos recibidos:', data);
+                
+                if (!data.success || !data.data || data.data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr><td colspan="6" class="text-center py-4">
+                            <p>No hay cursos. Crea tu primer curso.</p>
+                            ${data.modo === 'ejemplo' ? '<small class="text-muted">Modo ejemplo activo (Supabase no configurado)</small>' : ''}
+                        </td></tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = data.data.map(curso => `
+                    <tr>
+                        <td>#${curso.id ? curso.id.substring(0, 8) : 'N/A'}</td>
+                        <td>
+                            <strong>${curso.titulo}</strong><br>
+                            <small class="text-muted">${curso.nivel || 'N/A'} • ${curso.duracion_horas}h</small>
+                        </td>
+                        <td><strong>$${parseFloat(curso.precio).toLocaleString('es-AR')}</strong></td>
+                        <td>
+                            <i class="ri-user-line"></i> 0
+                        </td>
+                        <td>
+                            <span class="badge bg-${curso.activo ? 'success' : 'secondary'}">
+                                ${curso.activo ? 'Activo' : 'Inactivo'}
+                            </span>
+                            ${curso.destacado ? '<span class="badge bg-warning ms-1">Destacado</span>' : ''}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="editarCurso('${curso.id}')" title="Editar">
+                                <i class="ri-edit-line"></i>
+                            </button>
+                            <button class="btn btn-sm btn-info" onclick="gestionarLecciones('${curso.id}')" title="Lecciones">
+                                <i class="ri-play-list-line"></i>
+                            </button>
+                            <button class="btn btn-sm btn-${curso.activo ? 'warning' : 'success'}" 
+                                    onclick="toggleActivoCurso('${curso.id}', ${!curso.activo})" 
+                                    title="${curso.activo ? 'Desactivar' : 'Activar'}">
+                                <i class="ri-${curso.activo ? 'eye-off' : 'eye'}-line"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarCurso('${curso.id}')" title="Eliminar">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error cargando cursos:', error);
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">
+                    Error al cargar cursos: ${error.message}<br>
+                    <small>Revisa la consola para más detalles</small>
+                </td></tr>`;
+            }
+        }
+
+        function modalNuevoCurso() {
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="ri-graduation-cap-line"></i> Nuevo Curso</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form-nuevo-curso">
+                                <div class="row">
+                                    <div class="col-md-8 mb-3">
+                                        <label class="form-label">Título del Curso *</label>
+                                        <input type="text" class="form-control" id="curso-titulo" required 
+                                               placeholder="Ej: Panadería Básica - Primeros Pasos">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Precio ($) *</label>
+                                        <input type="number" class="form-control" id="curso-precio" required min="0" step="0.01">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Descripción *</label>
+                                    <textarea class="form-control" id="curso-descripcion" rows="3" required
+                                              placeholder="Describe brevemente qué aprenderán los alumnos"></textarea>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Duración (horas) *</label>
+                                        <input type="number" class="form-control" id="curso-duracion" required min="1" step="0.5">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Nivel</label>
+                                        <select class="form-select" id="curso-nivel">
+                                            <option value="Principiante">Principiante</option>
+                                            <option value="Intermedio">Intermedio</option>
+                                            <option value="Avanzado">Avanzado</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Imagen URL</label>
+                                        <input type="url" class="form-control" id="curso-imagen" 
+                                               placeholder="https://...">
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="curso-activo" checked>
+                                            <label class="form-check-label" for="curso-activo">
+                                                Activo (visible en la tienda)
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="curso-destacado">
+                                            <label class="form-check-label" for="curso-destacado">
+                                                Curso Destacado
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info">
+                                    <i class="ri-information-line"></i>
+                                    Después de crear el curso, podrás agregar las lecciones y videos.
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="guardarNuevoCurso()">
+                                <i class="ri-save-line"></i> Crear Curso
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener('hidden.bs.modal', () => modal.remove());
+        }
+
+        async function guardarNuevoCurso() {
+            const titulo = document.getElementById('curso-titulo').value;
+            const precio = parseFloat(document.getElementById('curso-precio').value);
+            const descripcion = document.getElementById('curso-descripcion').value;
+            const duracion = parseFloat(document.getElementById('curso-duracion').value);
+            const nivel = document.getElementById('curso-nivel').value;
+            const imagen = document.getElementById('curso-imagen').value;
+            const activo = document.getElementById('curso-activo').checked;
+            const destacado = document.getElementById('curso-destacado').checked;
+
+            if (!titulo || !precio || !descripcion || !duracion) {
+                alert('Por favor completa todos los campos obligatorios');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${window.API_BASE}/api/admin/cursos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        titulo,
+                        descripcion,
+                        precio,
+                        duracion_horas: duracion,
+                        nivel,
+                        imagen_url: imagen || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800',
+                        activo,
+                        destacado,
+                        contenido: []
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ Curso creado exitosamente');
+                    bootstrap.Modal.getInstance(document.querySelector('.modal')).hide();
+                    cargarCursos();
+                } else {
+                    alert('❌ Error: ' + (data.message || 'No se pudo crear el curso'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al crear el curso');
+            }
+        }
+
+        async function editarCurso(id) {
+            // TODO: Implementar edición
+            alert('Función de edición en desarrollo');
+        }
+
+        async function toggleActivoCurso(id, nuevoEstado) {
+            if (!confirm(`¿${nuevoEstado ? 'Activar' : 'Desactivar'} este curso?`)) return;
+            
+            try {
+                const response = await fetch(`${window.API_BASE}/api/admin/cursos/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ activo: nuevoEstado })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`✅ Curso ${nuevoEstado ? 'activado' : 'desactivado'}`);
+                    cargarCursos();
+                } else {
+                    alert('❌ Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al actualizar el curso');
+            }
+        }
+
+        async function eliminarCurso(id) {
+            if (!confirm('¿Estás seguro de eliminar este curso? Esta acción no se puede deshacer.')) return;
+            
+            try {
+                const response = await fetch(`${window.API_BASE}/api/admin/cursos/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('✅ Curso eliminado');
+                    cargarCursos();
+                } else {
+                    alert('❌ Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al eliminar el curso');
+            }
+        }
+
+        function gestionarLecciones(cursoId) {
+            // Cargar datos del curso
+            fetch(`${window.API_BASE}/api/cursos`)
+                .then(res => res.json())
+                .then(data => {
+                    const curso = data.data.find(c => c.id === cursoId);
+                    if (!curso) {
+                        alert('Curso no encontrado');
+                        return;
+                    }
+                    mostrarModalLecciones(curso);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al cargar el curso');
+                });
+        }
+
+        function mostrarModalLecciones(curso) {
+            const lecciones = curso.contenido || [];
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <i class="ri-play-list-line"></i> Lecciones: ${curso.titulo}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <button class="btn btn-primary btn-sm" onclick="agregarNuevaLeccion('${curso.id}')">
+                                    <i class="ri-add-line"></i> Agregar Lección
+                                </button>
+                            </div>
+                            
+                            <div id="lecciones-lista" class="list-group">
+                                ${lecciones.length === 0 ? `
+                                    <div class="alert alert-info">
+                                        <i class="ri-information-line"></i> 
+                                        No hay lecciones todavía. Comienza agregando tu primera lección.
+                                    </div>
+                                ` : lecciones.map((leccion, index) => `
+                                    <div class="list-group-item" data-index="${index}">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1">
+                                                    <span class="badge bg-secondary me-2">${index + 1}</span>
+                                                    ${leccion.titulo}
+                                                </h6>
+                                                <p class="mb-1 text-muted small">
+                                                    <i class="ri-time-line"></i> ${leccion.duracion || 'N/A'}
+                                                </p>
+                                                ${leccion.video_url ? `
+                                                    <p class="mb-0 small">
+                                                        <i class="ri-video-line"></i> 
+                                                        <a href="${leccion.video_url}" target="_blank" class="text-decoration-none">
+                                                            Ver video
+                                                        </a>
+                                                    </p>
+                                                ` : '<p class="mb-0 small text-warning"><i class="ri-alert-line"></i> Sin video</p>'}
+                                            </div>
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-outline-secondary" onclick="editarLeccion('${curso.id}', ${index})" title="Editar">
+                                                    <i class="ri-edit-line"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger" onclick="eliminarLeccion('${curso.id}', ${index})" title="Eliminar">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </button>
+                                                ${index > 0 ? `
+                                                    <button class="btn btn-outline-primary" onclick="moverLeccion('${curso.id}', ${index}, 'up')" title="Subir">
+                                                        <i class="ri-arrow-up-line"></i>
+                                                    </button>
+                                                ` : ''}
+                                                ${index < lecciones.length - 1 ? `
+                                                    <button class="btn btn-outline-primary" onclick="moverLeccion('${curso.id}', ${index}, 'down')" title="Bajar">
+                                                        <i class="ri-arrow-down-line"></i>
+                                                    </button>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener('hidden.bs.modal', () => modal.remove());
+        }
+
+        function agregarNuevaLeccion(cursoId) {
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.id = 'modal-nueva-leccion';
+            modal.innerHTML = `
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="ri-add-line"></i> Nueva Lección</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form-nueva-leccion">
+                                <div class="mb-3">
+                                    <label class="form-label">Título de la Lección *</label>
+                                    <input type="text" class="form-control" id="leccion-titulo" required
+                                           placeholder="Ej: Introducción a la Panadería">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Duración *</label>
+                                    <input type="text" class="form-control" id="leccion-duracion" required
+                                           placeholder="Ej: 30 min">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">URL del Video</label>
+                                    <input type="url" class="form-control" id="leccion-video"
+                                           placeholder="https://youtube.com/watch?v=... o https://vimeo.com/...">
+                                    <small class="form-text text-muted">
+                                        Puedes usar YouTube, Vimeo u otro servicio de videos
+                                    </small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Descripción (opcional)</label>
+                                    <textarea class="form-control" id="leccion-descripcion" rows="2"
+                                              placeholder="Breve descripción de lo que se aprenderá"></textarea>
+                                </div>
+                                
+                                <div class="alert alert-info small">
+                                    <strong>💡 Tip:</strong> Para YouTube, usa videos "No listados" para que solo sean accesibles con el link.
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="guardarNuevaLeccion('${cursoId}')">
+                                <i class="ri-save-line"></i> Agregar Lección
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener('hidden.bs.modal', () => modal.remove());
+        }
+
+        async function guardarNuevaLeccion(cursoId) {
+            const titulo = document.getElementById('leccion-titulo').value;
+            const duracion = document.getElementById('leccion-duracion').value;
+            const video = document.getElementById('leccion-video').value;
+            const descripcion = document.getElementById('leccion-descripcion').value;
+
+            if (!titulo || !duracion) {
+                alert('Por favor completa el título y la duración');
+                return;
+            }
+
+            try {
+                // Obtener curso actual
+                const response = await fetch(`${window.API_BASE}/api/cursos`);
+                const data = await response.json();
+                const curso = data.data.find(c => c.id === cursoId);
+
+                if (!curso) {
+                    alert('Curso no encontrado');
+                    return;
+                }
+
+                // Agregar nueva lección
+                const lecciones = curso.contenido || [];
+                lecciones.push({
+                    titulo,
+                    duracion,
+                    video_url: video || '',
+                    descripcion: descripcion || '',
+                    material: []
+                });
+
+                // Actualizar curso
+                const updateResponse = await fetch(`${window.API_BASE}/api/admin/cursos/${cursoId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contenido: lecciones })
+                });
+
+                const updateData = await updateResponse.json();
+
+                if (updateData.success) {
+                    alert('✅ Lección agregada exitosamente');
+                    bootstrap.Modal.getInstance(document.getElementById('modal-nueva-leccion')).hide();
+                    // Recargar modal de lecciones
+                    const modalLecciones = document.querySelector('.modal.show');
+                    if (modalLecciones) {
+                        bootstrap.Modal.getInstance(modalLecciones).hide();
+                    }
+                    setTimeout(() => gestionarLecciones(cursoId), 300);
+                } else {
+                    alert('❌ Error: ' + updateData.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al agregar la lección');
+            }
+        }
+
+        async function editarLeccion(cursoId, index) {
+            try {
+                const response = await fetch(`${window.API_BASE}/api/cursos`);
+                const data = await response.json();
+                const curso = data.data.find(c => c.id === cursoId);
+                const leccion = curso.contenido[index];
+
+                const modal = document.createElement('div');
+                modal.className = 'modal fade';
+                modal.id = 'modal-editar-leccion';
+                modal.innerHTML = `
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><i class="ri-edit-line"></i> Editar Lección</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="form-editar-leccion">
+                                    <div class="mb-3">
+                                        <label class="form-label">Título de la Lección *</label>
+                                        <input type="text" class="form-control" id="edit-leccion-titulo" 
+                                               value="${leccion.titulo}" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Duración *</label>
+                                        <input type="text" class="form-control" id="edit-leccion-duracion" 
+                                               value="${leccion.duracion}" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">URL del Video</label>
+                                        <input type="url" class="form-control" id="edit-leccion-video"
+                                               value="${leccion.video_url || ''}">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Descripción</label>
+                                        <textarea class="form-control" id="edit-leccion-descripcion" rows="2">${leccion.descripcion || ''}</textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" onclick="actualizarLeccion('${cursoId}', ${index})">
+                                    <i class="ri-save-line"></i> Guardar Cambios
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                const bsModal = new bootstrap.Modal(modal);
+                bsModal.show();
+                modal.addEventListener('hidden.bs.modal', () => modal.remove());
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al cargar la lección');
+            }
+        }
+
+        async function actualizarLeccion(cursoId, index) {
+            const titulo = document.getElementById('edit-leccion-titulo').value;
+            const duracion = document.getElementById('edit-leccion-duracion').value;
+            const video = document.getElementById('edit-leccion-video').value;
+            const descripcion = document.getElementById('edit-leccion-descripcion').value;
+
+            if (!titulo || !duracion) {
+                alert('Por favor completa el título y la duración');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${window.API_BASE}/api/cursos`);
+                const data = await response.json();
+                const curso = data.data.find(c => c.id === cursoId);
+
+                const lecciones = curso.contenido || [];
+                lecciones[index] = {
+                    titulo,
+                    duracion,
+                    video_url: video || '',
+                    descripcion: descripcion || '',
+                    material: lecciones[index].material || []
+                };
+
+                const updateResponse = await fetch(`${window.API_BASE}/api/admin/cursos/${cursoId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contenido: lecciones })
+                });
+
+                const updateData = await updateResponse.json();
+
+                if (updateData.success) {
+                    alert('✅ Lección actualizada');
+                    bootstrap.Modal.getInstance(document.getElementById('modal-editar-leccion')).hide();
+                    const modalLecciones = document.querySelector('.modal.show');
+                    if (modalLecciones) {
+                        bootstrap.Modal.getInstance(modalLecciones).hide();
+                    }
+                    setTimeout(() => gestionarLecciones(cursoId), 300);
+                } else {
+                    alert('❌ Error: ' + updateData.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al actualizar la lección');
+            }
+        }
+
+        async function eliminarLeccion(cursoId, index) {
+            if (!confirm('¿Estás seguro de eliminar esta lección?')) return;
+
+            try {
+                const response = await fetch(`${window.API_BASE}/api/cursos`);
+                const data = await response.json();
+                const curso = data.data.find(c => c.id === cursoId);
+
+                const lecciones = curso.contenido || [];
+                lecciones.splice(index, 1);
+
+                const updateResponse = await fetch(`${window.API_BASE}/api/admin/cursos/${cursoId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contenido: lecciones })
+                });
+
+                const updateData = await updateResponse.json();
+
+                if (updateData.success) {
+                    alert('✅ Lección eliminada');
+                    const modalLecciones = document.querySelector('.modal.show');
+                    if (modalLecciones) {
+                        bootstrap.Modal.getInstance(modalLecciones).hide();
+                    }
+                    setTimeout(() => gestionarLecciones(cursoId), 300);
+                } else {
+                    alert('❌ Error: ' + updateData.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al eliminar la lección');
+            }
+        }
+
+        async function moverLeccion(cursoId, index, direccion) {
+            try {
+                const response = await fetch(`${window.API_BASE}/api/cursos`);
+                const data = await response.json();
+                const curso = data.data.find(c => c.id === cursoId);
+
+                const lecciones = [...curso.contenido];
+                const nuevoIndex = direccion === 'up' ? index - 1 : index + 1;
+
+                if (nuevoIndex < 0 || nuevoIndex >= lecciones.length) return;
+
+                // Intercambiar
+                [lecciones[index], lecciones[nuevoIndex]] = [lecciones[nuevoIndex], lecciones[index]];
+
+                const updateResponse = await fetch(`${window.API_BASE}/api/admin/cursos/${cursoId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contenido: lecciones })
+                });
+
+                const updateData = await updateResponse.json();
+
+                if (updateData.success) {
+                    const modalLecciones = document.querySelector('.modal.show');
+                    if (modalLecciones) {
+                        bootstrap.Modal.getInstance(modalLecciones).hide();
+                    }
+                    setTimeout(() => gestionarLecciones(cursoId), 300);
+                } else {
+                    alert('❌ Error: ' + updateData.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al mover la lección');
+            }
+        }
+
+        async function cargarTodasOrdenes() {
+            const tbody = document.getElementById('ordenes-todas');
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">No hay órdenes</td></tr>';
+            
+            // TODO: Implementar carga real desde API
+        }
+
+        function verTodasOrdenes() {
+            document.querySelector('[data-section="ordenes"]').click();
+        }
+
+        function filtrarOrdenes() {
+            const estado = document.getElementById('filtro-estado').value;
+            cargarTodasOrdenes(estado);
+        }
+
+        function modalNuevoProducto() {
+            const modal = new bootstrap.Modal(document.getElementById('modal-nuevo-producto'));
+            
+            // Limpiar formulario
+            document.getElementById('form-nuevo-producto').reset();
+            document.getElementById('producto-activo').checked = true;
+            document.getElementById('producto-destacado').checked = false;
+            
+            modal.show();
+        }
+
+        async function guardarNuevoProducto() {
+            // Validar formulario
+            const form = document.getElementById('form-nuevo-producto');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Recopilar datos
+            const nuevoProducto = {
+                nombre: document.getElementById('producto-nombre').value.trim(),
+                precio: parseFloat(document.getElementById('producto-precio').value),
+                descripcion: document.getElementById('producto-descripcion').value.trim(),
+                categoria: document.getElementById('producto-categoria').value,
+                stock: parseInt(document.getElementById('producto-stock').value),
+                sku: document.getElementById('producto-sku').value.trim() || null,
+                imagen_url: document.getElementById('producto-imagen').value.trim() || null,
+                activo: document.getElementById('producto-activo').checked,
+                destacado: document.getElementById('producto-destacado').checked
+            };
+
+            try {
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+                
+                const response = await fetch(`${API_BASE}/api/admin/productos`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify(nuevoProducto)
+                });
+
+                if (response.ok) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('modal-nuevo-producto'));
+                    modal.hide();
+                    
+                    alert('✅ Producto creado exitosamente');
+                    
+                    // Recargar lista de productos
+                    cargarProductos();
+                } else {
+                    const error = await response.json();
+                    alert('❌ Error al crear producto: ' + (error.mensaje || 'Error desconocido'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al conectar con el servidor');
+            }
+        }
+
+        function modalNuevoCurso() {
+            const modal = new bootstrap.Modal(document.getElementById('modal-nuevo-curso'));
+            
+            // Limpiar formulario
+            document.getElementById('form-nuevo-curso').reset();
+            document.getElementById('curso-activo').checked = true;
+            document.getElementById('curso-destacado').checked = false;
+            document.getElementById('curso-duracion').value = '1';
+            
+            modal.show();
+        }
+
+        async function guardarNuevoCurso() {
+            // Validar formulario
+            const form = document.getElementById('form-nuevo-curso');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Recopilar datos
+            const nuevoCurso = {
+                titulo: document.getElementById('curso-titulo').value.trim(),
+                precio: parseFloat(document.getElementById('curso-precio').value),
+                descripcion: document.getElementById('curso-descripcion').value.trim(),
+                duracion_horas: parseFloat(document.getElementById('curso-duracion').value),
+                nivel: document.getElementById('curso-nivel').value,
+                categoria: document.getElementById('curso-categoria').value || null,
+                imagen_url: document.getElementById('curso-imagen').value.trim() || null,
+                video_intro: document.getElementById('curso-video-intro').value.trim() || null,
+                activo: document.getElementById('curso-activo').checked,
+                destacado: document.getElementById('curso-destacado').checked,
+                contenido: [] // Array vacío de lecciones, se agregan después
+            };
+
+            try {
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+                
+                const response = await fetch(`${API_BASE}/api/admin/cursos`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify(nuevoCurso)
+                });
+
+                if (response.ok) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('modal-nuevo-curso'));
+                    modal.hide();
+                    
+                    alert('✅ Curso creado exitosamente\n\nAhora puedes agregar lecciones desde la tabla de cursos.');
+                    
+                    // Recargar lista de cursos
+                    cargarCursos();
+                } else {
+                    const error = await response.json();
+                    alert('❌ Error al crear curso: ' + (error.mensaje || 'Error desconocido'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al conectar con el servidor');
+            }
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('admin_password');
+            location.reload();
+        }
+
+        // Función de inicialización
+        function inicializarAdmin() {
+            console.log('🚀 Inicializando admin panel...');
+            
+            // Configurar navegación del sidebar
+            const menuLinks = document.querySelectorAll('.sidebar-menu a[data-section]');
+            console.log('📋 Enlaces de menú encontrados:', menuLinks.length);
+            
+            menuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = link.dataset.section;
+                    console.log('🔄 Navegando a sección:', section);
+                    
+                    // Actualizar menú activo
+                    document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Mostrar sección
+                    document.querySelectorAll('[id$="-section"]').forEach(s => s.style.display = 'none');
+                    document.getElementById(`${section}-section`).style.display = 'block';
+                    
+                    // Actualizar título
+                    document.querySelector('.admin-header h1').textContent = 
+                        link.textContent.replace(/^\s+|\s+$/g, '').replace(/\s+/g, ' ');
+                    
+                    // Cargar datos según la sección
+                    console.log('📊 Cargando datos para:', section);
+                    if (section === 'dashboard') cargarDashboard();
+                    else if (section === 'productos') {
+                        console.log('📦 Llamando a cargarProductos()');
+                        cargarProductos();
+                    }
+                    else if (section === 'cursos') {
+                        console.log('📚 Llamando a cargarCursos()');
+                        cargarCursos();
+                    }
+                    else if (section === 'ordenes') cargarTodasOrdenes();
+                    else if (section === 'configuracion') cargarConfiguracion();
+                });
+            });
+            
+            // Cargar dashboard inicial
+            console.log('📊 Cargando dashboard inicial...');
+            cargarDashboard();
+        }
+
+        // Ejecutar cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', inicializarAdmin);
+        } else {
+            inicializarAdmin();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos - El Artesano</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --color-primary: #D4A574;
+            --color-secondary: #8B4513;
+            --color-dark: #2C1810;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--color-dark);
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--color-dark);
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--color-primary);
+        }
+
+        /* Hero */
+        .hero-cursos {
+            background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: 5rem 0 3rem;
+            text-align: center;
+        }
+
+        .hero-cursos h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Curso Card */
+        .curso-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            margin-bottom: 2rem;
+            height: 100%;
+        }
+
+        .curso-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .curso-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+        }
+
+        .curso-content {
+            padding: 2rem;
+        }
+
+        .curso-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--color-dark);
+            margin-bottom: 1rem;
+        }
+
+        .curso-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .curso-meta i {
+            color: var(--color-primary);
+        }
+
+        .curso-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .curso-description {
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .btn-comprar {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 25px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn-comprar:hover {
+            background: var(--color-secondary);
+            transform: translateY(-2px);
+        }
+
+        .badge-nivel {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .badge-principiante { background: #e3f2fd; color: #1976d2; }
+        .badge-intermedio { background: #fff3e0; color: #f57c00; }
+        .badge-avanzado { background: #f3e5f5; color: #7b1fa2; }
+
+        /* Mis Cursos */
+        .mis-cursos-section {
+            padding: 4rem 0;
+            background: #f8f9fa;
+        }
+
+        .curso-acceso {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .curso-acceso img {
+            width: 150px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .btn-acceder {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .btn-acceder:hover {
+            background: #218838;
+        }
+
+        .progreso-curso {
+            margin-top: 0.5rem;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">🥖 El Artesano</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#productos">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/cursos.html">Cursos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#contacto">Contacto</a></li>
+                    <li class="nav-item" id="nav-mis-cursos" style="display: none;">
+                        <a class="nav-link" href="#mis-cursos">
+                            <i class="ri-book-open-line"></i> Mis Cursos
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero-cursos">
+        <div class="container">
+            <h1 data-aos="fade-up">Aprende el Arte de la Panadería</h1>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">Cursos online y presenciales para convertirte en un maestro panadero</p>
+        </div>
+    </section>
+
+    <!-- Cursos Disponibles -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5" data-aos="fade-up">Cursos Disponibles</h2>
+            <div class="row" id="cursos-lista">
+                <!-- Los cursos se cargarán dinámicamente aquí -->
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mis Cursos (Solo si está autenticado) -->
+    <section class="mis-cursos-section" id="mis-cursos" style="display: none;">
+        <div class="container">
+            <h2 class="mb-4">Mis Cursos</h2>
+            <div id="mis-cursos-lista">
+                <p class="text-muted">No tienes cursos adquiridos aún</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+        window.API_BASE = '';
+        
+        const token = localStorage.getItem('user_token');
+
+        // Verificar si está autenticado
+        if (token) {
+            document.getElementById('nav-mis-cursos').style.display = 'block';
+            document.getElementById('mis-cursos').style.display = 'block';
+            cargarMisCursos();
+        }
+
+        // Cargar cursos disponibles
+        async function cargarCursos() {
+            try {
+                const resp = await fetch((window.API_BASE || '') + '/api/cursos');
+                const data = await resp.json();
+                
+                const cursosLista = document.getElementById('cursos-lista');
+                
+                if (data.success && data.data.length > 0) {
+                    cursosLista.innerHTML = data.data.map(curso => `
+                        <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                            <div class="curso-card">
+                                <img src="${curso.imagen_url || 'img/curso-placeholder.jpg'}" class="curso-image" alt="${curso.titulo}">
+                                <div class="curso-content">
+                                    <span class="badge-nivel badge-${curso.nivel || 'principiante'}">${curso.nivel || 'Principiante'}</span>
+                                    <h3 class="curso-title">${curso.titulo}</h3>
+                                    <div class="curso-meta">
+                                        <span><i class="ri-time-line"></i> ${curso.duracion || '4 semanas'}</span>
+                                        <span><i class="ri-play-circle-line"></i> ${curso.lecciones || '12'} lecciones</span>
+                                    </div>
+                                    <p class="curso-description">${curso.descripcion}</p>
+                                    <div class="curso-price">$${curso.precio}</div>
+                                    <button class="btn btn-comprar" onclick="comprarCurso(${curso.id})">
+                                        <i class="ri-shopping-cart-line"></i> Comprar Curso
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    cursosLista.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No hay cursos disponibles</p></div>';
+                }
+            } catch (error) {
+                console.error('Error cargando cursos:', error);
+                document.getElementById('cursos-lista').innerHTML = '<div class="col-12 text-center py-5"><p class="text-danger">Error cargando cursos</p></div>';
+            }
+        }
+
+        // Cargar mis cursos
+        async function cargarMisCursos() {
+            try {
+                const resp = await fetch((window.API_BASE || '') + '/api/cursos/mis-cursos', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await resp.json();
+                
+                const misCursosLista = document.getElementById('mis-cursos-lista');
+                
+                if (data.success && data.data.length > 0) {
+                    misCursosLista.innerHTML = data.data.map(curso => `
+                        <div class="curso-acceso">
+                            <img src="${curso.imagen_url || 'img/curso-placeholder.jpg'}" alt="${curso.titulo}">
+                            <div class="flex-grow-1">
+                                <h4>${curso.titulo}</h4>
+                                <p class="text-muted mb-2">${curso.descripcion}</p>
+                                <div class="progreso-curso">
+                                    <small class="text-muted">Progreso: ${curso.progreso || 0}%</small>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" style="width: ${curso.progreso || 0}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-acceder" onclick="accederCurso(${curso.id})">
+                                <i class="ri-play-circle-line"></i> Acceder
+                            </button>
+                        </div>
+                    `).join('');
+                } else {
+                    misCursosLista.innerHTML = '<p class="text-muted">No tienes cursos adquiridos aún</p>';
+                }
+            } catch (error) {
+                console.error('Error cargando mis cursos:', error);
+            }
+        }
+
+        function comprarCurso(cursoId) {
+            // Buscar el curso en la lista cargada
+            const cursoCard = event.target.closest('.curso-card');
+            if (!cursoCard) return;
+            
+            const titulo = cursoCard.querySelector('.curso-title').textContent;
+            const precioText = cursoCard.querySelector('.curso-price').textContent;
+            const precio = parseFloat(precioText.replace('$', '').replace(',', ''));
+            
+            // Agregar al carrito (usar localStorage como en index.html)
+            let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+            
+            // Verificar si el curso ya está en el carrito
+            const cursoExistente = carrito.find(item => item.id === cursoId);
+            
+            if (cursoExistente) {
+                alert('Este curso ya está en tu carrito');
+                return;
+            }
+            
+            // Agregar curso al carrito
+            carrito.push({
+                id: cursoId,
+                nombre: titulo,
+                precio: precio,
+                cantidad: 1,
+                tipo: 'curso'
+            });
+            
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            
+            // Mostrar confirmación
+            if (confirm(`${titulo} agregado al carrito. ¿Ir al checkout?`)) {
+                window.location.href = '/#checkout';
+            }
+        }
+
+        function accederCurso(cursoId) {
+            // Redirigir al reproductor del curso
+            window.location.href = `/curso-player.html?id=${cursoId}`;
+        }
+
+        // Cargar cursos al inicio
+        cargarCursos();
+    </script>
+</body>
+</html>

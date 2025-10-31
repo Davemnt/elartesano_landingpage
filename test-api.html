@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API</title>
+</head>
+<body>
+    <h1>Test API Endpoints</h1>
+    <button onclick="testProductos()">Test Productos</button>
+    <button onclick="testCursos()">Test Cursos</button>
+    <button onclick="testOrdenes()">Test Órdenes Admin</button>
+    
+    <pre id="result"></pre>
+
+    <script>
+        const resultEl = document.getElementById('result');
+
+        async function testProductos() {
+            try {
+                console.log('Fetching /api/productos...');
+                const response = await fetch('/api/productos');
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Data:', data);
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Error:', error);
+                resultEl.textContent = 'ERROR: ' + error.message;
+            }
+        }
+
+        async function testCursos() {
+            try {
+                console.log('Fetching /api/cursos...');
+                const response = await fetch('/api/cursos');
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Data:', data);
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Error:', error);
+                resultEl.textContent = 'ERROR: ' + error.message;
+            }
+        }
+
+        async function testOrdenes() {
+            try {
+                console.log('Fetching /api/ordenes/admin/all...');
+                const response = await fetch('/api/ordenes/admin/all');
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Data:', data);
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Error:', error);
+                resultEl.textContent = 'ERROR: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
