@@ -22,6 +22,7 @@ import ordenesRoutes from './src/routes/ordenes.routes.js';
 import pagosRoutes from './src/routes/pagos.routes.js';
 import adminRoutes from './src/routes/admin.routes.js';
 import accesoCursosRoutes from './src/routes/acceso-cursos.routes.js';
+import uploadRoutes from './src/routes/upload.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -99,11 +100,15 @@ app.use('/api/cursos', accesoCursosRoutes); // Rutas de acceso sin login
 app.use('/api/ordenes', ordenesRoutes);
 app.use('/api/pagos', pagosRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/upload', uploadRoutes);
 console.log('✅ Rutas de API registradas');
 
 // ===================================
 // ARCHIVOS ESTÁTICOS (DESPUÉS de las rutas API)
 // ===================================
+
+// Servir archivos de uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // SOLUCIÓN SIMPLE Y EFECTIVA:
 // Express procesa middlewares en orden. Las rutas de API ya están registradas arriba,

@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
 
         * {
             margin: 0;
@@ -16,17 +16,20 @@
         }
 
         :root {
-            --color-primary: #000000;
-            --color-secondary: #2d2d2d;
-            --color-dark: #1a1a1a;
-            --color-light: #f5f5f5;
-            --color-accent: #666666;
+            --color-primary: #ede8d0;
+            --color-secondary: #1a1a1a;
+            --color-dark: #121212;
+            --color-accent: #353c42;
+            --color-light: #f8f9fa;
+            --color-white: #FFFFFF;
             --sidebar-width: 260px;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #f5f5f5;
+            font-family: var(--font-body);
+            background: var(--color-light);
         }
 
         /* Sidebar */
@@ -36,27 +39,29 @@
             top: 0;
             height: 100vh;
             width: var(--sidebar-width);
-            background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: linear-gradient(180deg, var(--color-secondary) 0%, var(--color-dark) 100%);
             padding: 2rem 0;
             z-index: 1000;
             overflow-y: auto;
-            border-right: 1px solid #333;
+            border-right: 2px solid var(--color-primary);
         }
 
         .sidebar-brand {
             padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid #333;
+            border-bottom: 2px solid rgba(237, 232, 208, 0.2);
             margin-bottom: 1rem;
         }
 
         .sidebar-brand h3 {
-            color: #ffffff;
+            font-family: var(--font-heading);
+            color: var(--color-primary);
             font-weight: 700;
             margin: 0;
+            font-size: 1.5rem;
         }
 
         .sidebar-brand p {
-            color: #999;
+            color: rgba(237, 232, 208, 0.7);
             margin: 0;
             font-size: 0.85rem;
         }
@@ -74,16 +79,17 @@
             display: flex;
             align-items: center;
             padding: 0.75rem 1.5rem;
-            color: rgba(255,255,255,0.8);
+            color: rgba(237, 232, 208, 0.8);
             text-decoration: none;
             transition: all 0.3s;
+            border-left: 4px solid transparent;
         }
 
         .sidebar-menu a:hover,
         .sidebar-menu a.active {
-            background: rgba(255,255,255,0.05);
-            color: white;
-            border-left: 4px solid #ffffff;
+            background: rgba(237, 232, 208, 0.1);
+            color: var(--color-primary);
+            border-left: 4px solid var(--color-primary);
         }
 
         .sidebar-menu a i {
@@ -103,17 +109,19 @@
             background: white;
             padding: 1.5rem 2rem;
             border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 2px solid var(--color-primary);
         }
 
         .admin-header h1 {
             margin: 0;
-            color: var(--color-dark);
-            font-size: 1.8rem;
+            font-family: var(--font-heading);
+            color: var(--color-secondary);
+            font-size: 2rem;
         }
 
         .user-info {
@@ -126,13 +134,13 @@
             width: 45px;
             height: 45px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-dark) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 600;
-            border: 2px solid #e0e0e0;
+            color: var(--color-primary);
+            font-weight: 700;
+            border: 3px solid var(--color-primary);
         }
 
         /* Cards */
@@ -147,15 +155,18 @@
             background: white;
             padding: 1.5rem;
             border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             display: flex;
             align-items: center;
             gap: 1rem;
-            transition: transform 0.3s;
+            transition: all 0.3s;
+            border: 2px solid transparent;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
+            border-color: var(--color-primary);
+            box-shadow: 0 6px 20px rgba(237, 232, 208, 0.3);
         }
 
         .stat-icon {
@@ -168,21 +179,22 @@
             font-size: 1.5rem;
         }
 
-        .stat-icon.blue { background: linear-gradient(135deg, #000000 0%, #2d2d2d 100%); color: white; }
-        .stat-icon.green { background: linear-gradient(135deg, #2d2d2d 0%, #4a4a4a 100%); color: white; }
-        .stat-icon.orange { background: linear-gradient(135deg, #4a4a4a 0%, #666666 100%); color: white; }
-        .stat-icon.purple { background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%); color: white; }
+        .stat-icon.blue { background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-dark) 100%); color: var(--color-primary); }
+        .stat-icon.green { background: linear-gradient(135deg, #2d5016 0%, #1a3a0f 100%); color: var(--color-primary); }
+        .stat-icon.orange { background: linear-gradient(135deg, #8b4513 0%, #5c2e0a 100%); color: var(--color-primary); }
+        .stat-icon.purple { background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%); color: var(--color-primary); }
 
         .stat-info h3 {
             margin: 0;
             font-size: 2rem;
-            color: #1a1a1a;
+            font-family: var(--font-heading);
+            color: var(--color-secondary);
             font-weight: 700;
         }
 
         .stat-info p {
             margin: 0;
-            color: #666;
+            color: var(--color-accent);
             font-size: 0.9rem;
         }
 
@@ -191,16 +203,19 @@
             background: white;
             padding: 2rem;
             border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             margin-bottom: 2rem;
+            border: 2px solid var(--color-primary);
         }
 
         .content-card h2 {
-            color: #1a1a1a;
+            font-family: var(--font-heading);
+            color: var(--color-secondary);
             margin-bottom: 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 1.8rem;
         }
 
         /* Table */
@@ -210,40 +225,55 @@
 
         .table thead th {
             border-top: none;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 3px solid var(--color-primary);
             font-weight: 600;
-            color: #1a1a1a;
-            background: #fafafa;
+            font-family: var(--font-heading);
+            color: var(--color-secondary);
+            background: linear-gradient(to bottom, var(--color-primary), rgba(237, 232, 208, 0.3));
+            font-size: 0.95rem;
         }
 
         .table tbody tr:hover {
-            background: #f9f9f9;
+            background: rgba(237, 232, 208, 0.1);
         }
 
         .badge {
             padding: 0.35rem 0.75rem;
             border-radius: 20px;
+            font-weight: 600;
         }
 
-        .badge.bg-success { background: #2d2d2d !important; }
-        .badge.bg-warning { background: #666666 !important; }
-        .badge.bg-info { background: #4a4a4a !important; }
-        .badge.bg-secondary { background: #999999 !important; }
+        .badge.bg-success { background: #2d5016 !important; color: var(--color-primary) !important; }
+        .badge.bg-warning { background: #8b4513 !important; color: var(--color-primary) !important; }
+        .badge.bg-info { background: var(--color-accent) !important; color: var(--color-primary) !important; }
+        .badge.bg-secondary { background: #666666 !important; color: var(--color-primary) !important; }
 
         .btn-primary {
-            background: #000000;
-            border: none;
-            color: white;
+            background: var(--color-secondary);
+            border: 2px solid var(--color-secondary);
+            color: var(--color-primary);
+            font-weight: 600;
+            transition: all 0.3s;
         }
 
         .btn-primary:hover {
-            background: #2d2d2d;
-            color: white;
+            background: var(--color-primary);
+            color: var(--color-secondary);
+            border-color: var(--color-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         .btn-secondary {
-            background: #666666;
-            border: none;
+            background: var(--color-accent);
+            border: 2px solid var(--color-accent);
+            color: var(--color-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-primary);
+            color: var(--color-accent);
+            border-color: var(--color-accent);
         }
 
         .btn-secondary:hover {
@@ -289,24 +319,38 @@
 
         /* Modales */
         .modal-header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: white;
-            border-bottom: none;
+            background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-dark) 100%);
+            color: var(--color-primary);
+            border-bottom: 3px solid var(--color-primary);
+        }
+
+        .modal-header .modal-title {
+            font-family: var(--font-heading);
         }
 
         .modal-header .btn-close {
-            filter: invert(1);
+            filter: invert(1) brightness(1.5);
         }
 
         .modal-footer {
-            border-top: 1px solid #e0e0e0;
+            border-top: 2px solid var(--color-primary);
+            background: rgba(237, 232, 208, 0.1);
+        }
+
+        .modal-content {
+            border: 2px solid var(--color-primary);
         }
 
         /* Inputs */
         .form-control:focus,
         .form-select:focus {
-            border-color: #2d2d2d;
-            box-shadow: 0 0 0 0.2rem rgba(45, 45, 45, 0.25);
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 0.2rem rgba(237, 232, 208, 0.3);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--color-secondary);
         }
 
         .form-label {
@@ -756,10 +800,57 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">URL de la Imagen</label>
-                            <input type="url" class="form-control" id="producto-imagen" 
-                                   placeholder="https://ejemplo.com/imagen.jpg">
-                            <small class="text-muted">Puedes usar servicios como Imgur, Cloudinary o Supabase Storage</small>
+                            <label class="form-label">Imagen del Producto</label>
+                            
+                            <!-- Tabs para seleccionar método -->
+                            <ul class="nav nav-tabs mb-3" id="producto-imagen-tabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="producto-upload-tab" data-bs-toggle="tab" 
+                                            data-bs-target="#producto-upload" type="button" role="tab">
+                                        📁 Subir desde PC
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="producto-url-tab" data-bs-toggle="tab" 
+                                            data-bs-target="#producto-url" type="button" role="tab">
+                                        🔗 URL Externa
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="producto-imagen-content">
+                                <!-- Tab de Upload -->
+                                <div class="tab-pane fade show active" id="producto-upload" role="tabpanel">
+                                    <div class="upload-area" id="producto-upload-area" 
+                                         style="border: 2px dashed #ddd; padding: 20px; text-align: center; cursor: pointer; border-radius: 8px;">
+                                        <i class="ri-upload-cloud-2-line" style="font-size: 2rem; color: #666;"></i>
+                                        <p class="mb-2">Arrastra una imagen aquí o haz clic para seleccionar</p>
+                                        <small class="text-muted">Formatos: JPG, PNG, GIF, WebP (máx. 5MB)</small>
+                                        <input type="file" id="producto-file-input" accept="image/*" style="display: none;">
+                                    </div>
+                                    
+                                    <!-- Preview de imagen -->
+                                    <div id="producto-image-preview" style="display: none; margin-top: 15px;">
+                                        <img id="producto-preview-img" src="" alt="Preview" 
+                                             style="max-width: 200px; max-height: 200px; object-fit: cover; border-radius: 8px;">
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-outline-danger" id="producto-remove-image">
+                                                <i class="ri-delete-bin-line"></i> Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tab de URL -->
+                                <div class="tab-pane fade" id="producto-url" role="tabpanel">
+                                    <input type="url" class="form-control" id="producto-imagen-url" 
+                                           placeholder="https://ejemplo.com/imagen.jpg">
+                                    <small class="text-muted">URL de imagen externa</small>
+                                </div>
+                            </div>
+
+                            <!-- Campo oculto para almacenar la URL final -->
+                            <input type="hidden" id="producto-imagen" name="imagen_url">
                         </div>
 
                         <div class="row">
@@ -866,10 +957,57 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Imagen de Portada (URL)</label>
-                            <input type="url" class="form-control" id="curso-imagen" 
-                                   placeholder="https://ejemplo.com/curso.jpg">
-                            <small class="text-muted">Imagen que se mostrará en la lista de cursos</small>
+                            <label class="form-label">Imagen de Portada</label>
+                            
+                            <!-- Tabs para seleccionar método -->
+                            <ul class="nav nav-tabs mb-3" id="curso-imagen-tabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="curso-upload-tab" data-bs-toggle="tab" 
+                                            data-bs-target="#curso-upload" type="button" role="tab">
+                                        📁 Subir desde PC
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="curso-url-tab" data-bs-toggle="tab" 
+                                            data-bs-target="#curso-url" type="button" role="tab">
+                                        🔗 URL Externa
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="curso-imagen-content">
+                                <!-- Tab de Upload -->
+                                <div class="tab-pane fade show active" id="curso-upload" role="tabpanel">
+                                    <div class="upload-area" id="curso-upload-area" 
+                                         style="border: 2px dashed #ddd; padding: 20px; text-align: center; cursor: pointer; border-radius: 8px;">
+                                        <i class="ri-upload-cloud-2-line" style="font-size: 2rem; color: #666;"></i>
+                                        <p class="mb-2">Arrastra una imagen aquí o haz clic para seleccionar</p>
+                                        <small class="text-muted">Formatos: JPG, PNG, GIF, WebP (máx. 5MB)</small>
+                                        <input type="file" id="curso-file-input" accept="image/*" style="display: none;">
+                                    </div>
+                                    
+                                    <!-- Preview de imagen -->
+                                    <div id="curso-image-preview" style="display: none; margin-top: 15px;">
+                                        <img id="curso-preview-img" src="" alt="Preview" 
+                                             style="max-width: 200px; max-height: 200px; object-fit: cover; border-radius: 8px;">
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-outline-danger" id="curso-remove-image">
+                                                <i class="ri-delete-bin-line"></i> Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tab de URL -->
+                                <div class="tab-pane fade" id="curso-url" role="tabpanel">
+                                    <input type="url" class="form-control" id="curso-imagen-url" 
+                                           placeholder="https://ejemplo.com/curso.jpg">
+                                    <small class="text-muted">URL de imagen externa</small>
+                                </div>
+                            </div>
+
+                            <!-- Campo oculto para almacenar la URL final -->
+                            <input type="hidden" id="curso-imagen" name="imagen_url">
                         </div>
 
                         <div class="mb-3">
@@ -1097,16 +1235,60 @@
         async function cargarDashboard() {
             console.log('🎯 cargarDashboard() iniciado');
             try {
-                // TODO: Implementar llamadas reales al API
-                document.getElementById('stat-ordenes').textContent = '45';
-                document.getElementById('stat-ventas').textContent = '$12,350';
-                document.getElementById('stat-productos').textContent = '28';
-                document.getElementById('stat-clientes').textContent = '156';
+                // Cargar estadísticas reales
+                await cargarEstadisticasReales();
                 
                 console.log('🎯 Llamando a cargarOrdenesRecientes()');
                 cargarOrdenesRecientes();
             } catch (error) {
                 console.error('Error cargando dashboard:', error);
+            }
+        }
+
+        async function cargarEstadisticasReales() {
+            try {
+                // Obtener productos
+                const prodResponse = await fetch(`${window.location.origin}/api/productos`);
+                const prodData = await prodResponse.json();
+                const numProductos = prodData.success && prodData.data ? prodData.data.length : 0;
+                document.getElementById('stat-productos').textContent = numProductos;
+                console.log(`✅ Productos cargados: ${numProductos}`);
+                
+                // Obtener cursos
+                const cursosResponse = await fetch(`${window.location.origin}/api/cursos`);
+                const cursosData = await cursosResponse.json();
+                const numCursos = cursosData.success && cursosData.data ? cursosData.data.length : 0;
+                
+                // Obtener órdenes (para estadísticas)
+                try {
+                    const ordenesResponse = await fetch(`${window.API_BASE}/api/ordenes/admin/all`);
+                    const ordenesData = await ordenesResponse.json();
+                    const numOrdenes = ordenesData.success && ordenesData.data ? ordenesData.data.length : 0;
+                    document.getElementById('stat-ordenes').textContent = numOrdenes;
+                    
+                    // Calcular total de ventas
+                    if (ordenesData.success && ordenesData.data) {
+                        const totalVentas = ordenesData.data
+                            .filter(o => o.estado === 'pagado' || o.estado === 'entregado')
+                            .reduce((sum, o) => sum + parseFloat(o.total || 0), 0);
+                        document.getElementById('stat-ventas').textContent = `$${totalVentas.toLocaleString('es-AR')}`;
+                    }
+                } catch (err) {
+                    console.warn('⚠️ No se pudieron cargar órdenes:', err.message);
+                    document.getElementById('stat-ordenes').textContent = '0';
+                    document.getElementById('stat-ventas').textContent = '$0';
+                }
+                
+                // Clientes (por implementar)
+                document.getElementById('stat-clientes').textContent = '-';
+                
+            } catch (error) {
+                console.error('Error cargando estadísticas:', error);
+                // Valores por defecto en caso de error
+                document.getElementById('stat-ordenes').textContent = '0';
+                document.getElementById('stat-ventas').textContent = '$0';
+                document.getElementById('stat-productos').textContent = '0';
+                document.getElementById('stat-clientes').textContent = '0';
             }
         }
 
@@ -1348,7 +1530,7 @@
                 
                 tbody.innerHTML = data.data.map(producto => `
                     <tr>
-                        <td>#${producto.id ? producto.id.substring(0, 8) : 'N/A'}</td>
+                        <td>#${producto.id ? String(producto.id).substring(0, 8) : 'N/A'}</td>
                         <td>
                             <strong>${producto.nombre}</strong><br>
                             <small class="text-muted">${producto.categoria || 'Sin categoría'}</small>
@@ -1382,13 +1564,47 @@
                 document.getElementById('stat-productos').textContent = productosActivos;
                 
             } catch (error) {
-                console.error('Error cargando productos:', error);
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-danger">Error al cargar productos</td></tr>';
+                console.error('❌ Error cargando productos:', error);
+                tbody.innerHTML = `
+                    <tr><td colspan="6" class="text-center py-4 text-danger">
+                        <i class="ri-error-warning-line"></i> Error al cargar productos: ${error.message}<br>
+                        <small class="text-muted">Revisa la consola para más detalles</small>
+                    </td></tr>
+                `;
             }
         }
 
-        function editarProducto(id) {
-            alert('Funcionalidad de edición en desarrollo');
+        async function editarProducto(id) {
+            try {
+                // Buscar el producto en los datos cargados
+                const response = await fetch(`/api/productos`);
+                const data = await response.json();
+                const producto = data.data.find(p => p.id == id);
+                
+                if (!producto) {
+                    alert('Producto no encontrado');
+                    return;
+                }
+
+                // Llenar el formulario con los datos del producto
+                document.getElementById('edit-producto-id').value = producto.id;
+                document.getElementById('edit-producto-nombre').value = producto.nombre || '';
+                document.getElementById('edit-producto-categoria').value = producto.categoria || '';
+                document.getElementById('edit-producto-descripcion').value = producto.descripcion || '';
+                document.getElementById('edit-producto-precio').value = producto.precio || '';
+                document.getElementById('edit-producto-stock').value = producto.stock || '';
+                document.getElementById('edit-producto-activo').checked = producto.activo !== false;
+                document.getElementById('edit-producto-destacado').checked = producto.destacado === true;
+                document.getElementById('edit-producto-imagen').value = producto.imagen_url || '';
+
+                // Mostrar el modal
+                const modal = new bootstrap.Modal(document.getElementById('modal-editar-producto'));
+                modal.show();
+                
+            } catch (error) {
+                console.error('Error cargando producto:', error);
+                alert('Error al cargar los datos del producto');
+            }
         }
 
         function toggleActivoProducto(id, nuevoEstado) {
@@ -1427,7 +1643,7 @@
                 
                 tbody.innerHTML = data.data.map(curso => `
                     <tr>
-                        <td>#${curso.id ? curso.id.substring(0, 8) : 'N/A'}</td>
+                        <td>#${curso.id ? String(curso.id).substring(0, 8) : 'N/A'}</td>
                         <td>
                             <strong>${curso.titulo}</strong><br>
                             <small class="text-muted">${curso.nivel || 'N/A'} • ${curso.duracion_horas}h</small>
@@ -1461,11 +1677,13 @@
                     </tr>
                 `).join('');
             } catch (error) {
-                console.error('Error cargando cursos:', error);
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">
-                    Error al cargar cursos: ${error.message}<br>
-                    <small>Revisa la consola para más detalles</small>
-                </td></tr>`;
+                console.error('❌ Error cargando cursos:', error);
+                tbody.innerHTML = `
+                    <tr><td colspan="6" class="text-center py-4 text-danger">
+                        <i class="ri-error-warning-line"></i> Error al cargar cursos: ${error.message}<br>
+                        <small class="text-muted">Revisa la consola para más detalles</small>
+                    </td></tr>
+                `;
             }
         }
 
@@ -1609,8 +1827,36 @@
         }
 
         async function editarCurso(id) {
-            // TODO: Implementar edición
-            alert('Función de edición en desarrollo');
+            try {
+                // Buscar el curso en los datos cargados
+                const response = await fetch(`/api/cursos`);
+                const data = await response.json();
+                const curso = data.data.find(c => c.id == id);
+                
+                if (!curso) {
+                    alert('Curso no encontrado');
+                    return;
+                }
+
+                // Llenar el formulario con los datos del curso
+                document.getElementById('edit-curso-id').value = curso.id;
+                document.getElementById('edit-curso-titulo').value = curso.titulo || '';
+                document.getElementById('edit-curso-nivel').value = curso.nivel || '';
+                document.getElementById('edit-curso-descripcion').value = curso.descripcion || '';
+                document.getElementById('edit-curso-precio').value = curso.precio || '';
+                document.getElementById('edit-curso-duracion').value = curso.duracion_horas || '';
+                document.getElementById('edit-curso-activo').checked = curso.activo !== false;
+                document.getElementById('edit-curso-destacado').checked = curso.destacado === true;
+                document.getElementById('edit-curso-imagen').value = curso.imagen_url || '';
+
+                // Mostrar el modal
+                const modal = new bootstrap.Modal(document.getElementById('modal-editar-curso'));
+                modal.show();
+                
+            } catch (error) {
+                console.error('Error cargando curso:', error);
+                alert('Error al cargar los datos del curso');
+            }
         }
 
         async function toggleActivoCurso(id, nuevoEstado) {
@@ -2214,6 +2460,332 @@
             location.reload();
         }
 
+        // ===================================
+        // FUNCIONES DE UPLOAD DE IMÁGENES
+        // ===================================
+        
+        function inicializarUploadImagenes() {
+            console.log('📁 Inicializando sistema de upload de imágenes...');
+            
+            // Configurar upload para productos
+            configurarUpload('producto');
+            
+            // Configurar upload para cursos
+            configurarUpload('curso');
+        }
+
+        function configurarUpload(tipo) {
+            const uploadArea = document.getElementById(`${tipo}-upload-area`);
+            const fileInput = document.getElementById(`${tipo}-file-input`);
+            const preview = document.getElementById(`${tipo}-image-preview`);
+            const previewImg = document.getElementById(`${tipo}-preview-img`);
+            const removeBtn = document.getElementById(`${tipo}-remove-image`);
+            const hiddenInput = document.getElementById(`${tipo}-imagen`);
+            const urlInput = document.getElementById(`${tipo}-imagen-url`);
+
+            if (!uploadArea || !fileInput) {
+                console.warn(`⚠️ Elementos de upload no encontrados para ${tipo}`);
+                return;
+            }
+
+            // Click en área de upload
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            // Drag and drop
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#007bff';
+                uploadArea.style.backgroundColor = '#f8f9fa';
+            });
+
+            uploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#ddd';
+                uploadArea.style.backgroundColor = 'transparent';
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#ddd';
+                uploadArea.style.backgroundColor = 'transparent';
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelect(files[0], tipo);
+                }
+            });
+
+            // Selección de archivo
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileSelect(e.target.files[0], tipo);
+                }
+            });
+
+            // Eliminar imagen
+            if (removeBtn) {
+                removeBtn.addEventListener('click', () => {
+                    resetImageUpload(tipo);
+                });
+            }
+
+            // Sincronizar URL externa con campo oculto
+            if (urlInput) {
+                urlInput.addEventListener('input', (e) => {
+                    if (hiddenInput) {
+                        hiddenInput.value = e.target.value;
+                    }
+                });
+            }
+
+            // Listener para cambio de tabs
+            const uploadTab = document.getElementById(`${tipo}-upload-tab`);
+            const urlTab = document.getElementById(`${tipo}-url-tab`);
+
+            if (uploadTab) {
+                uploadTab.addEventListener('shown.bs.tab', () => {
+                    // Al cambiar a upload, limpiar URL
+                    if (urlInput) urlInput.value = '';
+                });
+            }
+
+            if (urlTab) {
+                urlTab.addEventListener('shown.bs.tab', () => {
+                    // Al cambiar a URL, limpiar upload
+                    resetImageUpload(tipo);
+                });
+            }
+        }
+
+        async function handleFileSelect(file, tipo) {
+            console.log(`📁 Archivo seleccionado para ${tipo}:`, file.name);
+
+            // Verificar si ya hay un upload en progreso para este tipo
+            if (window[`uploading_${tipo}`]) {
+                console.log(`⚠️ Upload ya en progreso para ${tipo}, ignorando...`);
+                return;
+            }
+
+            // Validar tipo de archivo
+            if (!file.type.startsWith('image/')) {
+                mostrarAlerta('Solo se permiten archivos de imagen', 'error');
+                return;
+            }
+
+            // Validar tamaño (5MB máximo)
+            if (file.size > 5 * 1024 * 1024) {
+                mostrarAlerta('El archivo es muy grande. Máximo 5MB', 'error');
+                return;
+            }
+
+            // Marcar como subiendo
+            window[`uploading_${tipo}`] = true;
+
+            // Mostrar preview inmediatamente
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                mostrarPreview(e.target.result, tipo);
+            };
+            reader.readAsDataURL(file);
+
+            // Subir archivo al servidor
+            try {
+                const formData = new FormData();
+                formData.append('imagen', file);
+
+                mostrarCargando(`Subiendo ${file.name}...`);
+
+                const response = await fetch('/api/upload/imagen', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('admin_password')}`
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+                ocultarCargando();
+
+                if (result.error) {
+                    throw new Error(result.mensaje);
+                }
+
+                console.log('✅ Imagen subida correctamente:', result.data);
+                
+                // Actualizar campo oculto con la URL
+                const hiddenInput = document.getElementById(`${tipo}-imagen`);
+                if (hiddenInput) {
+                    hiddenInput.value = result.data.url;
+                }
+
+                mostrarAlerta('Imagen subida correctamente', 'success');
+
+            } catch (error) {
+                console.error('❌ Error al subir imagen:', error);
+                mostrarAlerta(`Error al subir imagen: ${error.message}`, 'error');
+                resetImageUpload(tipo);
+                ocultarCargando();
+            } finally {
+                // Liberar la bandera de upload
+                window[`uploading_${tipo}`] = false;
+            }
+        }
+
+        function mostrarPreview(src, tipo) {
+            const preview = document.getElementById(`${tipo}-image-preview`);
+            const previewImg = document.getElementById(`${tipo}-preview-img`);
+
+            if (preview && previewImg) {
+                previewImg.src = src;
+                preview.style.display = 'block';
+            }
+        }
+
+        function resetImageUpload(tipo) {
+            const preview = document.getElementById(`${tipo}-image-preview`);
+            const previewImg = document.getElementById(`${tipo}-preview-img`);
+            const fileInput = document.getElementById(`${tipo}-file-input`);
+            const hiddenInput = document.getElementById(`${tipo}-imagen`);
+
+            if (preview) preview.style.display = 'none';
+            if (previewImg) previewImg.src = '';
+            if (fileInput) fileInput.value = '';
+            if (hiddenInput) hiddenInput.value = '';
+        }
+
+        function mostrarCargando(mensaje = 'Cargando...') {
+            // Crear overlay de carga si no existe
+            let overlay = document.getElementById('loading-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'loading-overlay';
+                overlay.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                                background: rgba(0,0,0,0.5); z-index: 9999; display: flex; 
+                                align-items: center; justify-content: center;">
+                        <div style="background: white; padding: 20px; border-radius: 8px; text-align: center;">
+                            <div class="spinner-border text-primary mb-2"></div>
+                            <div id="loading-message">${mensaje}</div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+            } else {
+                document.getElementById('loading-message').textContent = mensaje;
+                overlay.style.display = 'block';
+            }
+        }
+
+        function ocultarCargando() {
+            const overlay = document.getElementById('loading-overlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+            }
+        }
+
+        // Configurar formularios de edición
+        function configurarFormulariosEdicion() {
+            // Formulario de edición de productos
+            const formEditarProducto = document.getElementById('form-editar-producto');
+            if (formEditarProducto) {
+                formEditarProducto.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const id = document.getElementById('edit-producto-id').value;
+                    const productoDatos = {
+                        nombre: document.getElementById('edit-producto-nombre').value,
+                        categoria: document.getElementById('edit-producto-categoria').value,
+                        descripcion: document.getElementById('edit-producto-descripcion').value,
+                        precio: parseFloat(document.getElementById('edit-producto-precio').value),
+                        stock: parseInt(document.getElementById('edit-producto-stock').value),
+                        activo: document.getElementById('edit-producto-activo').checked,
+                        destacado: document.getElementById('edit-producto-destacado').checked,
+                        imagen_url: document.getElementById('edit-producto-imagen').value
+                    };
+
+                    try {
+                        const response = await fetch(`/api/admin/productos/${id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer admin123'
+                            },
+                            body: JSON.stringify(productoDatos)
+                        });
+
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            // Cerrar modal
+                            bootstrap.Modal.getInstance(document.getElementById('modal-editar-producto')).hide();
+                            
+                            // Recargar productos
+                            cargarProductos();
+                            
+                            // Mostrar mensaje de éxito
+                            alert('Producto actualizado exitosamente');
+                        } else {
+                            alert('Error: ' + result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error actualizando producto:', error);
+                        alert('Error al actualizar el producto');
+                    }
+                });
+            }
+
+            // Formulario de edición de cursos
+            const formEditarCurso = document.getElementById('form-editar-curso');
+            if (formEditarCurso) {
+                formEditarCurso.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const id = document.getElementById('edit-curso-id').value;
+                    const cursoDatos = {
+                        titulo: document.getElementById('edit-curso-titulo').value,
+                        nivel: document.getElementById('edit-curso-nivel').value,
+                        descripcion: document.getElementById('edit-curso-descripcion').value,
+                        precio: parseFloat(document.getElementById('edit-curso-precio').value),
+                        duracion_horas: parseInt(document.getElementById('edit-curso-duracion').value),
+                        activo: document.getElementById('edit-curso-activo').checked,
+                        destacado: document.getElementById('edit-curso-destacado').checked,
+                        imagen_url: document.getElementById('edit-curso-imagen').value
+                    };
+
+                    try {
+                        const response = await fetch(`/api/admin/cursos/${id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer admin123'
+                            },
+                            body: JSON.stringify(cursoDatos)
+                        });
+
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            // Cerrar modal
+                            bootstrap.Modal.getInstance(document.getElementById('modal-editar-curso')).hide();
+                            
+                            // Recargar cursos
+                            cargarCursos();
+                            
+                            // Mostrar mensaje de éxito
+                            alert('Curso actualizado exitosamente');
+                        } else {
+                            alert('Error: ' + result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error actualizando curso:', error);
+                        alert('Error al actualizar el curso');
+                    }
+                });
+            }
+        }
+
         // Función de inicialización
         function inicializarAdmin() {
             console.log('🚀 Inicializando admin panel...');
@@ -2256,6 +2828,12 @@
                 });
             });
             
+            // Inicializar funcionalidad de upload de imágenes
+            inicializarUploadImagenes();
+            
+            // Configurar formularios de edición
+            configurarFormulariosEdicion();
+            
             // Cargar dashboard inicial
             console.log('📊 Cargando dashboard inicial...');
             cargarDashboard();
@@ -2268,5 +2846,168 @@
             inicializarAdmin();
         }
     </script>
+
+    <!-- Modal Editar Producto -->
+    <div class="modal fade" id="modal-editar-producto" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="ri-edit-line"></i> Editar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="form-editar-producto">
+                    <div class="modal-body">
+                        <input type="hidden" id="edit-producto-id">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre del Producto</label>
+                                    <input type="text" class="form-control" id="edit-producto-nombre" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Categoría</label>
+                                    <select class="form-select" id="edit-producto-categoria" required>
+                                        <option value="">Seleccionar categoría</option>
+                                        <option value="panes">Panes</option>
+                                        <option value="tortas">Tortas</option>
+                                        <option value="masas">Masas</option>
+                                        <option value="comidas">Comidas</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" id="edit-producto-descripcion" rows="3"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Precio ($)</label>
+                                    <input type="number" class="form-control" id="edit-producto-precio" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Stock</label>
+                                    <input type="number" class="form-control" id="edit-producto-stock" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Estado</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="edit-producto-activo">
+                                        <label class="form-check-label">Activo</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="edit-producto-destacado">
+                                        <label class="form-check-label">Destacado</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Imagen URL</label>
+                            <input type="url" class="form-control" id="edit-producto-imagen">
+                            <div class="form-text">URL de la imagen del producto</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ri-save-line"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Curso -->
+    <div class="modal fade" id="modal-editar-curso" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="ri-edit-line"></i> Editar Curso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="form-editar-curso">
+                    <div class="modal-body">
+                        <input type="hidden" id="edit-curso-id">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Título del Curso</label>
+                                    <input type="text" class="form-control" id="edit-curso-titulo" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Nivel</label>
+                                    <select class="form-select" id="edit-curso-nivel" required>
+                                        <option value="">Seleccionar nivel</option>
+                                        <option value="Principiante">Principiante</option>
+                                        <option value="Intermedio">Intermedio</option>
+                                        <option value="Avanzado">Avanzado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" id="edit-curso-descripcion" rows="3"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Precio ($)</label>
+                                    <input type="number" class="form-control" id="edit-curso-precio" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Duración (horas)</label>
+                                    <input type="number" class="form-control" id="edit-curso-duracion" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Estado</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="edit-curso-activo">
+                                        <label class="form-check-label">Activo</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="edit-curso-destacado">
+                                        <label class="form-check-label">Destacado</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Imagen URL</label>
+                                    <input type="url" class="form-control" id="edit-curso-imagen">
+                                    <div class="form-text">URL de la imagen del curso</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ri-save-line"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

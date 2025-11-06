@@ -31,6 +31,13 @@ router.post('/cursos', crearCurso);
 router.patch('/cursos/:id', actualizarCurso);
 
 /**
+ * @route   PUT /api/admin/cursos/:id
+ * @desc    Actualizar curso completo
+ * @access  Admin
+ */
+router.put('/cursos/:id', actualizarCurso);
+
+/**
  * @route   DELETE /api/admin/cursos/:id
  * @desc    Eliminar curso (soft delete)
  * @access  Admin
@@ -54,6 +61,13 @@ router.post('/productos', crearProducto);
  * @access  Admin
  */
 router.patch('/productos/:id', actualizarProducto);
+
+/**
+ * @route   PUT /api/admin/productos/:id
+ * @desc    Actualizar producto completo
+ * @access  Admin
+ */
+router.put('/productos/:id', actualizarProducto);
 
 /**
  * @route   DELETE /api/admin/productos/:id

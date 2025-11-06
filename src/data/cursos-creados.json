@@ -1,0 +1,15 @@
+[
+  {
+    "id": 888,
+    "titulo": "Cocina Italiana Básica",
+    "descripcion": "Aprende a hacer pizzas, pastas y risottos auténticos",
+    "precio": 4500,
+    "duracion_horas": 12,
+    "nivel": "Principiante",
+    "imagen_url": "/img/cocina-italiana.jpg",
+    "activo": true,
+    "destacado": true,
+    "created_at": "2025-10-31T04:00:00.000Z",
+    "updated_at": "2025-10-31T04:00:00.000Z"
+  }
+]

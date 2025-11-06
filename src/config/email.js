@@ -3,10 +3,17 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-if (!process.env.RESEND_API_KEY) {
-    console.warn('⚠️ RESEND_API_KEY no configurado. Los emails no se enviarán.');
-}
+let resend = null;
 
-const resend = new Resend(process.env.RESEND_API_KEY || '');
+if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY.startsWith('re_')) {
+    try {
+        resend = new Resend(process.env.RESEND_API_KEY);
+        console.log('✅ Resend (Email) configurado correctamente');
+    } catch (error) {
+        console.warn('⚠️ Error al configurar Resend:', error.message);
+    }
+} else {
+    console.warn('⚠️ RESEND_API_KEY no configurado o inválido. Los emails no se enviarán.');
+}
 
 export default resend;

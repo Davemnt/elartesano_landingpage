@@ -3,28 +3,40 @@
  */
 export const verificarAdmin = (req, res, next) => {
     try {
-        // Verificar que haya usuario autenticado
-        if (!req.usuario) {
+        // Para desarrollo local, verificar contraseña simple
+        const authHeader = req.headers.authorization;
+        const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+        
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({
-                success: false,
-                message: 'Debe estar autenticado'
+                error: true,
+                mensaje: 'Token de autorización requerido'
             });
         }
         
-        // Verificar rol de administrador
-        if (req.usuario.rol !== 'admin') {
+        const token = authHeader.split(' ')[1];
+        
+        // Verificación simple para desarrollo
+        if (token !== adminPassword) {
             return res.status(403).json({
-                success: false,
-                message: 'No tiene permisos de administrador'
+                error: true,
+                mensaje: 'Credenciales de administrador inválidas'
             });
         }
+        
+        // Agregar información de admin al request
+        req.admin = { 
+            role: 'admin',
+            authenticated: true 
+        };
         
         next();
     } catch (error) {
+        console.error('❌ Error en middleware admin:', error);
         return res.status(500).json({
-            success: false,
-            message: 'Error al verificar permisos de administrador',
-            error: error.message
+            error: true,
+            mensaje: 'Error al verificar permisos de administrador',
+            detalles: error.message
         });
     }
 };

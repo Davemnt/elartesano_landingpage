@@ -1,4 +1,34 @@
 import { supabaseAdmin } from '../config/supabase.js';
+import fs from 'fs';
+import path from 'path';
+
+// Función para cargar cursos creados desde archivo
+function cargarCursosCreados() {
+    try {
+        const archivoPath = path.join(process.cwd(), 'src', 'data', 'cursos-creados.json');
+        if (fs.existsSync(archivoPath)) {
+            const data = fs.readFileSync(archivoPath, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (error) {
+        console.warn('⚠️ Error cargando cursos creados:', error.message);
+    }
+    return [];
+}
+
+// Función para guardar cursos creados en archivo
+function guardarCursosCreados(cursos) {
+    try {
+        const archivoPath = path.join(process.cwd(), 'src', 'data', 'cursos-creados.json');
+        fs.writeFileSync(archivoPath, JSON.stringify(cursos, null, 2), 'utf8');
+        console.log(`💾 Cursos guardados en archivo: ${cursos.length} items`);
+    } catch (error) {
+        console.error('❌ Error guardando cursos:', error.message);
+    }
+}
+
+// Lista de cursos creados dinámicamente (persistente)
+let cursosCreados = cargarCursosCreados();
 
 // Cursos de ejemplo para cuando Supabase no esté configurado
 const cursosEjemplo = [
@@ -69,13 +99,17 @@ export const obtenerCursos = async (req, res) => {
 
         // Si hay error de conexión o Supabase no configurado, usar datos de ejemplo
         if (error) {
-            console.warn('⚠️ Supabase no configurado, usando cursos de ejemplo');
+            console.warn('⚠️ Error conectando a Supabase, usando cursos de ejemplo + creados');
             console.log('Error de Supabase:', error.message);
-            console.log(`✅ Devolviendo ${cursosEjemplo.length} cursos de ejemplo`);
+            
+            // Combinar cursos de ejemplo con cursos creados dinámicamente
+            const cursosRespuesta = [...cursosEjemplo, ...cursosCreados];
+            
+            console.log(`✅ Devolviendo ${cursosRespuesta.length} cursos (${cursosEjemplo.length} ejemplo + ${cursosCreados.length} creados)`);
             return res.json({
                 success: true,
-                data: cursosEjemplo,
-                total: cursosEjemplo.length,
+                data: cursosRespuesta,
+                total: cursosRespuesta.length,
                 modo: 'ejemplo'
             });
         }
@@ -87,14 +121,19 @@ export const obtenerCursos = async (req, res) => {
             total: cursos.length
         });
     } catch (error) {
-        console.warn('⚠️ Error conectando a Supabase, usando cursos de ejemplo:', error.message);
-        console.log(`✅ Devolviendo ${cursosEjemplo.length} cursos de ejemplo (catch)`);
-        // En caso de error, devolver cursos de ejemplo
+        console.warn('⚠️ Error conectando a Supabase, usando cursos de ejemplo + creados:', error.message);
+        
+        // Combinar cursos de ejemplo con cursos creados dinámicamente
+        const cursosRespuesta = [...cursosEjemplo, ...cursosCreados];
+        
+        console.log(`✅ Devolviendo ${cursosRespuesta.length} cursos (${cursosEjemplo.length} ejemplo + ${cursosCreados.length} creados) (catch)`);
+        
+        // En caso de error, devolver cursos de ejemplo + creados
         res.json({
             success: true,
-            data: cursosEjemplo,
-            total: cursosEjemplo.length,
-            modo: 'ejemplo'
+            data: cursosRespuesta,
+            total: cursosRespuesta.length,
+            modo: 'ejemplo_con_creados'
         });
     }
 };
@@ -181,38 +220,73 @@ export const crearCurso = async (req, res) => {
             });
         }
 
-        const { data: curso, error } = await supabaseAdmin
-            .from('cursos')
-            .insert({
-                titulo,
-                descripcion,
-                precio: parseFloat(precio),
-                duracion_horas: parseFloat(duracion_horas),
-                nivel: nivel || 'Principiante',
-                imagen_url: imagen_url || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800',
-                contenido: contenido || [],
-                activo: activo !== false,
-                destacado: destacado === true
-            })
-            .select()
-            .single();
+        console.log('📚 Creando curso:', { titulo, precio, duracion_horas, imagen_url });
 
-        if (error) {
-            console.error('Error creando curso:', error);
-            return res.status(500).json({
-                success: false,
-                message: 'Error creando curso',
-                error: error.message
+        // Si tenemos Supabase configurado, usarlo
+        if (supabaseAdmin) {
+            const { data: curso, error } = await supabaseAdmin
+                .from('cursos')
+                .insert({
+                    titulo,
+                    descripcion,
+                    precio: parseFloat(precio),
+                    duracion_horas: parseFloat(duracion_horas),
+                    nivel: nivel || 'Principiante',
+                    imagen_url: imagen_url || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800',
+                    contenido: contenido || [],
+                    activo: activo !== false,
+                    destacado: destacado === true
+                })
+                .select()
+                .single();
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            return res.status(201).json({
+                success: true,
+                message: 'Curso creado exitosamente',
+                data: curso
             });
         }
 
+        // Modo desarrollo sin base de datos - simular creación
+        console.log('⚠️ Modo desarrollo: simulando creación de curso');
+        
+        const cursoSimulado = {
+            id: Date.now(), // ID simulado
+            titulo,
+            descripcion,
+            precio: parseFloat(precio),
+            duracion_horas: parseFloat(duracion_horas),
+            nivel: nivel || 'Principiante',
+            imagen_url: imagen_url || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800',
+            contenido: contenido || [],
+            activo: activo !== false,
+            destacado: destacado === true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        };
+
+        // Agregar a la lista de cursos creados
+        cursosCreados.push(cursoSimulado);
+        
+        // Guardar en archivo para persistencia
+        guardarCursosCreados(cursosCreados);
+
+        console.log('✅ Curso simulado creado:', cursoSimulado);
+        console.log(`📚 Total cursos en memoria: ${cursosCreados.length}`);
+
         res.status(201).json({
             success: true,
-            message: 'Curso creado exitosamente',
-            data: curso
+            message: 'Curso creado exitosamente (modo desarrollo)',
+            data: cursoSimulado,
+            nota: 'Este curso solo existe en memoria. Configura Supabase para persistencia real.'
         });
+
     } catch (error) {
-        console.error('Error en crearCurso:', error);
+        console.error('❌ Error en crearCurso:', error);
         res.status(500).json({
             success: false,
             message: 'Error interno del servidor',
@@ -245,26 +319,60 @@ export const actualizarCurso = async (req, res) => {
             });
         }
 
-        const { data: curso, error } = await supabaseAdmin
-            .from('cursos')
-            .update(updates)
-            .eq('id', id)
-            .select()
-            .single();
+        // Si tenemos Supabase configurado, usarlo
+        if (supabaseAdmin && supabaseAdmin.from) {
+            const { data: curso, error } = await supabaseAdmin
+                .from('cursos')
+                .update(updates)
+                .eq('id', id)
+                .select()
+                .single();
 
-        if (error) {
-            console.error('Error actualizando curso:', error);
-            return res.status(500).json({
-                success: false,
-                message: 'Error actualizando curso',
-                error: error.message
+            if (error) {
+                console.error('Error actualizando curso:', error);
+                return res.status(500).json({
+                    success: false,
+                    message: 'Error actualizando curso',
+                    error: error.message
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: 'Curso actualizado exitosamente',
+                data: curso
             });
         }
+
+        // Modo desarrollo sin base de datos - actualizar en memoria y archivo
+        console.log('⚠️ Modo desarrollo: actualizando curso en memoria');
+        
+        // Buscar el curso en los cursos creados
+        const indiceCurso = cursosCreados.findIndex(c => c.id == id);
+        
+        if (indiceCurso === -1) {
+            return res.status(404).json({
+                success: false,
+                message: 'Curso no encontrado'
+            });
+        }
+
+        // Actualizar el curso
+        cursosCreados[indiceCurso] = {
+            ...cursosCreados[indiceCurso],
+            ...updates,
+            updated_at: new Date().toISOString()
+        };
+
+        // Guardar cambios en archivo
+        guardarCursosCreados(cursosCreados);
+
+        console.log('✅ Curso actualizado:', cursosCreados[indiceCurso]);
 
         res.json({
             success: true,
             message: 'Curso actualizado exitosamente',
-            data: curso
+            data: cursosCreados[indiceCurso]
         });
     } catch (error) {
         console.error('Error en actualizarCurso:', error);

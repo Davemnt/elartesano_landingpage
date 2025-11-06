@@ -1,4 +1,34 @@
 import { supabaseAdmin } from '../config/supabase.js';
+import fs from 'fs';
+import path from 'path';
+
+// Función para cargar productos creados desde archivo
+function cargarProductosCreados() {
+    try {
+        const archivoPath = path.join(process.cwd(), 'src', 'data', 'productos-creados.json');
+        if (fs.existsSync(archivoPath)) {
+            const data = fs.readFileSync(archivoPath, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (error) {
+        console.warn('⚠️ Error cargando productos creados:', error.message);
+    }
+    return [];
+}
+
+// Función para guardar productos creados en archivo
+function guardarProductosCreados(productos) {
+    try {
+        const archivoPath = path.join(process.cwd(), 'src', 'data', 'productos-creados.json');
+        fs.writeFileSync(archivoPath, JSON.stringify(productos, null, 2), 'utf8');
+        console.log(`💾 Productos guardados en archivo: ${productos.length} items`);
+    } catch (error) {
+        console.error('❌ Error guardando productos:', error.message);
+    }
+}
+
+// Lista de productos creados dinámicamente (persistente)
+let productosCreados = cargarProductosCreados();
 
 // Productos de ejemplo para cuando Supabase no esté configurado
 const productosEjemplo = [
@@ -97,11 +127,13 @@ export const obtenerProductos = async (req, res) => {
 
         // Si hay error de conexión o Supabase no configurado, usar datos de ejemplo
         if (error) {
-            console.warn('⚠️ Supabase no configurado, usando productos de ejemplo');
+            console.warn('⚠️ Error conectando a Supabase, usando productos de ejemplo + creados');
             console.log('Error de Supabase:', error.message);
-            let productosRespuesta = [...productosEjemplo];
             
-            // Aplicar filtros a datos de ejemplo
+            // Combinar productos de ejemplo con productos creados dinámicamente
+            let productosRespuesta = [...productosEjemplo, ...productosCreados];
+            
+            // Aplicar filtros
             if (categoria) {
                 productosRespuesta = productosRespuesta.filter(p => p.categoria === categoria);
             }
@@ -109,12 +141,12 @@ export const obtenerProductos = async (req, res) => {
                 productosRespuesta = productosRespuesta.filter(p => p.destacado === true);
             }
             
-            console.log(`✅ Devolviendo ${productosRespuesta.length} productos de ejemplo`);
+            console.log(`✅ Devolviendo ${productosRespuesta.length} productos (${productosEjemplo.length} ejemplo + ${productosCreados.length} creados)`);
             return res.json({
                 success: true,
                 data: productosRespuesta,
                 total: productosRespuesta.length,
-                modo: 'ejemplo'
+                modo: 'ejemplo_con_creados'
             });
         }
 
@@ -125,14 +157,19 @@ export const obtenerProductos = async (req, res) => {
             total: productos.length
         });
     } catch (error) {
-        console.warn('⚠️ Error conectando a Supabase, usando productos de ejemplo:', error.message);
-        console.log(`✅ Devolviendo ${productosEjemplo.length} productos de ejemplo (catch)`);
-        // En caso de error, devolver productos de ejemplo
+        console.warn('⚠️ Error conectando a Supabase, usando productos de ejemplo + creados:', error.message);
+        
+        // Combinar productos de ejemplo con productos creados dinámicamente
+        const productosRespuesta = [...productosEjemplo, ...productosCreados];
+        
+        console.log(`✅ Devolviendo ${productosRespuesta.length} productos (${productosEjemplo.length} ejemplo + ${productosCreados.length} creados) (catch)`);
+        
+        // En caso de error, devolver productos de ejemplo + creados
         res.json({
             success: true,
-            data: productosEjemplo,
-            total: productosEjemplo.length,
-            modo: 'ejemplo'
+            data: productosRespuesta,
+            total: productosRespuesta.length,
+            modo: 'ejemplo_con_creados'
         });
     }
 };
@@ -178,36 +215,71 @@ export const crearProducto = async (req, res) => {
     try {
         const { nombre, descripcion, precio, imagen_url, categoria, stock, destacado } = req.body;
 
-        const { data: producto, error } = await supabaseAdmin
-            .from('productos')
-            .insert({
-                nombre,
-                descripcion,
-                precio,
-                imagen_url,
-                categoria,
-                stock: stock || 0,
-                destacado: destacado || false,
-                activo: true
-            })
-            .select()
-            .single();
+        console.log('📦 Creando producto:', { nombre, categoria, precio, imagen_url });
 
-        if (error) {
-            return res.status(500).json({
-                success: false,
-                message: 'Error creando producto',
-                error: error.message
+        // Si tenemos Supabase configurado, usarlo
+        if (supabaseAdmin) {
+            const { data: producto, error } = await supabaseAdmin
+                .from('productos')
+                .insert({
+                    nombre,
+                    descripcion,
+                    precio,
+                    imagen_url,
+                    categoria,  
+                    stock: stock || 0,
+                    destacado: destacado || false,
+                    activo: true
+                })
+                .select()
+                .single();
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            return res.status(201).json({
+                success: true,
+                message: 'Producto creado exitosamente',
+                data: producto
             });
         }
 
+        // Modo desarrollo sin base de datos - simular creación
+        console.log('⚠️ Modo desarrollo: simulando creación de producto');
+        
+        const productoSimulado = {
+            id: Date.now(), // ID simulado
+            nombre,
+            descripcion,
+            precio: parseFloat(precio),
+            imagen_url,
+            categoria,
+            stock: parseInt(stock) || 0,
+            destacado: destacado || false,
+            activo: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        };
+
+        // Agregar a la lista de productos creados
+        productosCreados.push(productoSimulado);
+        
+        // Guardar en archivo para persistencia
+        guardarProductosCreados(productosCreados);
+
+        console.log('✅ Producto simulado creado:', productoSimulado);
+        console.log(`📦 Total productos en memoria: ${productosCreados.length}`);
+
         res.status(201).json({
             success: true,
-            message: 'Producto creado exitosamente',
-            data: producto
+            message: 'Producto creado exitosamente (modo desarrollo)',
+            data: productoSimulado,
+            nota: 'Este producto solo existe en memoria. Configura Supabase para persistencia real.'
         });
+
     } catch (error) {
-        console.error('Error en crearProducto:', error);
+        console.error('❌ Error en crearProducto:', error);
         res.status(500).json({
             success: false,
             message: 'Error interno del servidor',
@@ -224,6 +296,8 @@ export const actualizarProducto = async (req, res) => {
         const { id } = req.params;
         const { nombre, descripcion, precio, imagen_url, categoria, stock, activo, destacado } = req.body;
 
+        console.log('📦 Actualizando producto:', { id, nombre, categoria, precio });
+
         const updates = {};
         if (nombre !== undefined) updates.nombre = nombre;
         if (descripcion !== undefined) updates.descripcion = descripcion;
@@ -234,28 +308,59 @@ export const actualizarProducto = async (req, res) => {
         if (activo !== undefined) updates.activo = activo;
         if (destacado !== undefined) updates.destacado = destacado;
 
-        const { data: producto, error } = await supabaseAdmin
-            .from('productos')
-            .update(updates)
-            .eq('id', id)
-            .select()
-            .single();
+        // Si tenemos Supabase configurado, usarlo
+        if (supabaseAdmin) {
+            const { data: producto, error } = await supabaseAdmin
+                .from('productos')
+                .update(updates)
+                .eq('id', id)
+                .select()
+                .single();
 
-        if (error) {
-            return res.status(500).json({
-                success: false,
-                message: 'Error actualizando producto',
-                error: error.message
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            return res.json({
+                success: true,
+                message: 'Producto actualizado exitosamente',
+                data: producto
             });
         }
+
+        // Modo desarrollo sin base de datos - actualizar en memoria y archivo
+        console.log('⚠️ Modo desarrollo: actualizando producto en memoria');
+        
+        // Buscar el producto en los productos creados
+        const indiceProducto = productosCreados.findIndex(p => p.id == id);
+        
+        if (indiceProducto === -1) {
+            return res.status(404).json({
+                success: false,
+                message: 'Producto no encontrado'
+            });
+        }
+
+        // Actualizar el producto
+        productosCreados[indiceProducto] = {
+            ...productosCreados[indiceProducto],
+            ...updates,
+            updated_at: new Date().toISOString()
+        };
+
+        // Guardar cambios en archivo
+        guardarProductosCreados(productosCreados);
+
+        console.log('✅ Producto actualizado:', productosCreados[indiceProducto]);
 
         res.json({
             success: true,
             message: 'Producto actualizado exitosamente',
-            data: producto
+            data: productosCreados[indiceProducto]
         });
+
     } catch (error) {
-        console.error('Error en actualizarProducto:', error);
+        console.error('❌ Error en actualizarProducto:', error);
         res.status(500).json({
             success: false,
             message: 'Error interno del servidor',
@@ -271,28 +376,48 @@ export const eliminarProducto = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const { data: producto, error } = await supabaseAdmin
-            .from('productos')
-            .update({ activo: false })
-            .eq('id', id)
-            .select()
-            .single();
+        console.log('📦 Eliminando producto:', { id });
 
-        if (error) {
-            return res.status(500).json({
-                success: false,
-                message: 'Error eliminando producto',
-                error: error.message
+        // Si tenemos Supabase configurado, usarlo
+        if (supabaseAdmin) {
+            const { data: producto, error } = await supabaseAdmin
+                .from('productos')
+                .update({ activo: false })
+                .eq('id', id)
+                .select()
+                .single();
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            return res.json({
+                success: true,
+                message: 'Producto eliminado exitosamente',
+                data: producto
             });
         }
 
+        // Modo desarrollo sin base de datos - simular eliminación
+        console.log('⚠️ Modo desarrollo: simulando eliminación de producto');
+
+        const productoSimulado = {
+            id: parseInt(id),
+            activo: false,
+            updated_at: new Date().toISOString()
+        };
+
+        console.log('✅ Producto simulado eliminado:', productoSimulado);
+
         res.json({
             success: true,
-            message: 'Producto eliminado exitosamente',
-            data: producto
+            message: 'Producto eliminado exitosamente (modo desarrollo)',
+            data: productoSimulado,
+            nota: 'Esta eliminación solo existe en memoria. Configura Supabase para persistencia real.'
         });
+
     } catch (error) {
-        console.error('Error en eliminarProducto:', error);
+        console.error('❌ Error en eliminarProducto:', error);
         res.status(500).json({
             success: false,
             message: 'Error interno del servidor',
