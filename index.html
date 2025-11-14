@@ -200,70 +200,111 @@
         <div class="container">
             <div class="section-title" data-aos="fade-up">
                 <h2>Contacto</h2>
-                <p>Estamos aquí para atenderte</p>
+                <p>Estamos aquí para atenderte. Visítanos o escríbenos</p>
             </div>
-            <div class="row">
-                <div class="col-lg-4" data-aos="fade-right">
-                    <div class="contact-info">
-                        <h3>Información</h3>
-                        <div class="info-item">
-                            <div class="info-icon"><i class="ri-map-pin-fill"></i></div>
-                            <div class="info-text">
-                                <h5>Dirección</h5>
-                                <p>Av. Vélez Sarsfield 28, Villa Madero<br>Provincia de Buenos Aires</p>
+            
+            <!-- Mapa e información agrupados -->
+            <div class="contact-main-section">
+                <div class="row">
+                    <!-- Mapa con información integrada -->
+                    <div class="col-lg-6" data-aos="fade-right">
+                        <div class="map-container">
+                            <h3>Cómo llegar</h3>
+                            <div class="map-wrapper">
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.304107551529!2d-58.509045223414105!3d-34.69750886245897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcced5dabfcecd%3A0x411ff202fcf662bd!2sAv.%20V%C3%A9lez%20Sarsfield%2022%2C%20B1768CNA%20Villa%20Madero%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1763144930105!5m2!1ses!2sar" 
+                                    width="100%" 
+                                    height="300" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy" 
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
                             </div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-icon"><i class="ri-phone-fill"></i></div>
-                            <div class="info-text">
-                                <h5>Teléfono</h5>
-                                <p>+54 11 1234-5678</p>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-icon"><i class="ri-time-fill"></i></div>
-                            <div class="info-text">
-                                <h5>Horario</h5>
-                                <p>Lun-Vie: 7:00-20:00<br>Sáb: 8:00-14:00</p>
+                            <!-- Información de contacto integrada -->
+                            <div class="integrated-contact-info">
+                                <div class="contact-info-row">
+                                    <div class="contact-info-compact">
+                                        <div class="contact-info-icon">
+                                            <i class="ri-map-pin-fill"></i>
+                                        </div>
+                                        <div class="contact-info-text">
+                                            <h5>Dirección</h5>
+                                            <p>Av. Vélez Sarsfield 22<br>Villa Madero, Buenos Aires</p>
+                                        </div>
+                                    </div>
+                                    <div class="contact-info-compact">
+                                        <div class="contact-info-icon">
+                                            <i class="ri-time-fill"></i>
+                                        </div>
+                                        <div class="contact-info-text">
+                                            <h5>Horarios</h5>
+                                            <p>Lun-Vie: 7:00-20:00<br>Sáb: 8:00-14:00</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-lg-8" data-aos="fade-left">
-                    <div class="contact-form">
-                        <h3>Envíanos un Mensaje</h3>
-                        <form id="contactForm" action="send-contact.php" method="POST">
-                            <!-- Campo honeypot oculto anti-bot -->
-                            <input type="text" name="website" style="display: none;" tabindex="-1">
+                    <!-- Formulario mejorado -->
+                    <div class="col-lg-6" data-aos="fade-left">
+                        <div class="contact-form">
+                            <h3>Envíanos un Mensaje</h3>
+                            <p class="form-subtitle">Responderemos a la brevedad</p>
                             
-                            <div class="form-group">
-                                <label>Nombre *</label>
-                                <input type="text" class="form-control" name="nombre" placeholder="Tu nombre" required minlength="2" maxlength="100">
-                            </div>
-                            <div class="form-group">
-                                <label>Email *</label>
-                                <input type="email" class="form-control" name="email" placeholder="tu@email.com" required>
-                            </div>
-                            <!-- <div class="form-group">
-                                <label>Teléfono (opcional)</label>
-                                <input type="tel" class="form-control" name="telefono" placeholder="+54 11 1234-5678" pattern="[\+]?[0-9\s\-\(\)]{7,20}">
-                            </div> -->
-                            <div class="form-group">
-                                <label>Mensaje *</label>
-                                <textarea class="form-control" name="mensaje" placeholder="Escribe tu mensaje (mínimo 10 caracteres)" required minlength="10" maxlength="2000" rows="5"></textarea>
-                            </div>
-                            
-                            <!-- Mensaje de respuesta -->
-                            <div id="formMessage" style="display: none; padding: 15px; border-radius: 8px; margin-bottom: 20px;"></div>
-                            
-                            <button type="submit" class="btn-submit" id="submitBtn">
-                                <span class="btn-text">Enviar Mensaje</span>
-                                <span class="btn-loading" style="display: none;">
-                                    <i class="ri-loader-4-line" style="animation: spin 1s linear infinite;"></i> Enviando...
-                                </span>
-                            </button>
-                        </form>
+                            <form id="contactForm" action="send-contact.php" method="POST">
+                                <!-- Campo honeypot oculto anti-bot -->
+                                <input type="text" name="website" style="display: none;" tabindex="-1">
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Nombre *</label>
+                                        <input type="text" class="form-control" name="nombre" placeholder="Tu nombre" required minlength="2" maxlength="100">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Email *</label>
+                                        <input type="email" class="form-control" name="email" placeholder="tu@email.com" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Asunto</label>
+                                        <select class="form-control" name="asunto">
+                                            <option value="consulta-general">Consulta General</option>
+                                            <option value="pedido-especial">Pedido Especial</option>
+                                            <option value="cursos">Información sobre Cursos</option>
+                                            <option value="catering">Servicio de Catering</option>
+                                            <option value="otro">Otro</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Mensaje *</label>
+                                        <textarea class="form-control" name="mensaje" placeholder="Escribe tu mensaje (mínimo 10 caracteres)" required minlength="10" maxlength="2000" rows="5"></textarea>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mensaje de respuesta -->
+                                <div id="formMessage" style="display: none; padding: 15px; border-radius: 8px; margin-bottom: 20px;"></div>
+                                
+                                <button type="submit" class="btn-submit" id="submitBtn">
+                                    <span class="btn-text">
+                                        <i class="ri-send-plane-fill"></i>
+                                        Enviar Mensaje
+                                    </span>
+                                    <span class="btn-loading" style="display: none;">
+                                        <i class="ri-loader-4-line" style="animation: spin 1s linear infinite;"></i> Enviando...
+                                    </span>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
