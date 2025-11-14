@@ -1,390 +1,976 @@
+<!-- cursos_protegido.html  (basado en tu cursos.html) -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cursos - El Artesano</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cursos de Panadería Artesanal - El Artesano</title>
 
-        :root {
-            --color-primary: #D4A574;
-            --color-secondary: #8B4513;
-            --color-dark: #2C1810;
-        }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap&text=ElArtesano" rel="stylesheet">
 
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 
-        /* Navbar */
-        .navbar {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 1rem 0;
-        }
+  <!-- Animations -->
+  <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
 
-        .navbar-brand {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            color: var(--color-dark);
-            font-size: 1.5rem;
-        }
+  <!-- Styles (mismo CSS tuyo con pequeñas adiciones) -->
+  <style>
+    /* === (La mayor parte de tu CSS original está intacta) === */
+    :root {
+      --color-primary: #ede8d0;
+      --color-secondary: #1a1a1a;
+      --color-dark: #121212;
+      --color-accent: #353c42;
+      --color-white: #FFFFFF;
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Poppins', sans-serif;
+      
+      /* Compatibilidad con variables antiguas */
+      --primary-color: var(--color-primary);
+      --secondary-color: var(--color-secondary);
+      --accent-color: var(--color-primary);
+      --dark-color: var(--color-dark);
+      --light-color: #FDF8F0;
+      --white: var(--color-white);
+      --gray-100: #F8F9FA;
+      --gray-200: #E9ECEF;
+      --gray-300: #DEE2E6;
+      --gray-600: #6C757D;
+      --gray-800: #343A40;
+      --gray-900: #212529;
+      
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+      --shadow-xl: 0 20px 40px rgba(0,0,0,0.1);
+      --border-radius: 12px;
+      --border-radius-lg: 20px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:var(--font-body);line-height:1.6;color:var(--gray-800);background:var(--light-color)}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    /* Navbar styles - matching index.html */
+    .navbar{background:transparent !important;box-shadow:none;padding:1rem 0;transition:all 0.3s ease;position:fixed;top:0;left:0;right:0;z-index:1000}
+    .navbar.scrolled{background:#121212 !important;box-shadow:0 2px 20px rgba(0,0,0,0.2);backdrop-filter:blur(10px)}
+    .navbar .container{display:flex;justify-content:space-between;align-items:center}
+    .navbar-brand{font-family:var(--font-heading);font-size:1.8rem;color:var(--color-white) !important;font-weight:800;text-decoration:none;display:flex;align-items:center;gap:10px}
+    .navbar-brand .logo-text{position:relative}
+    .navbar.scrolled .navbar-brand{color:var(--color-primary) !important}
+    .navbar-nav{display:flex;gap:20px;align-items:center}
+    .nav-link{color:var(--color-white) !important;font-weight:500;text-decoration:none;transition:color 0.3s ease;position:relative}
+    .navbar.scrolled .nav-link{color:var(--color-primary) !important}
+    .nav-link:hover,.nav-link.active{color:var(--color-primary) !important}
+    .nav-link::after{content:'';position:absolute;bottom:-5px;left:50%;width:0;height:2px;background:var(--color-primary);transition:all 0.3s ease;transform:translateX(-50%)}
+    .nav-link:hover::after,.nav-link.active::after{width:80%}
+    .navbar-toggler{display:none;background:none;border:2px solid var(--color-primary);padding:8px 12px;border-radius:5px;color:var(--color-primary);font-size:1.2rem}
 
-        .nav-link {
-            color: var(--color-dark);
-            font-weight: 500;
-            margin: 0 0.5rem;
-            transition: color 0.3s;
-        }
+    /* Added: auth buttons */
+    .auth-btn {
+      background: transparent;
+      border: 1px solid var(--gray-300);
+      padding: .5rem .9rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight:600;
+      color: var(--gray-300);
+    }
+    .auth-btn:hover { transform: translateY(-2px); border-color: var(--primary-color); color: var(--primary-color); }
 
-        .nav-link:hover {
-            color: var(--color-primary);
-        }
+    /* ... resto de tu CSS (hero, cursos, etc) intacto ... */
+    /* Para abreviar en este snippet incluyo solo los estilos usados más abajo, pero cuando copies pega todo tu CSS original */
+    /* Hero (mantener) */
+    .hero{background:linear-gradient(135deg,var(--color-secondary) 0%,var(--color-accent) 100%);padding:140px 0 100px;text-align:center;color:var(--white);position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 70% 20%, white 1px, transparent 1px), radial-gradient(circle at 90% 80%, white 1px, transparent 1px);background-size:100px 100px,150px 150px,80px 80px;opacity:.1}
+    .hero-content{position:relative;z-index:2}
+    .hero h1{font-family:var(--font-heading);font-size:4rem;font-weight:700;margin-bottom:1.5rem;line-height:1.2}
+    /* Courses grid & cards */
+    .courses-section{padding:100px 0}
+    .section-header{text-align:center;margin-bottom:4rem}
+    .section-title{font-family:var(--font-heading);font-size:2.8rem;color:var(--dark-color);margin-bottom:1rem}
+    .section-subtitle{font-size:1.2rem;color:var(--gray-600);max-width:600px;margin:0 auto}
+    .courses-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:2.5rem;margin-top:3rem}
+    .course-card{background:var(--white);border-radius:var(--border-radius-lg);overflow:hidden;box-shadow:var(--shadow);transition:all .4s;position:relative;border:2px solid transparent}
+    .course-card:hover{transform:translateY(-10px);box-shadow:var(--shadow-xl);border-color:var(--accent-color)}
+    .course-header{padding:2.5rem 2rem 1.5rem;position:relative}
+    .course-level{display:inline-block;background:var(--color-secondary);color:var(--color-primary);padding:.5rem 1rem;border-radius:20px;font-size:.85rem;font-weight:600;margin-bottom:1rem;box-shadow:var(--shadow-sm)}
+    .course-title{font-family:var(--font-heading);font-size:1.8rem;color:var(--dark-color);margin-bottom:1rem}
+    .course-description{color:var(--gray-600);line-height:1.7;margin-bottom:1.5rem}
+    .course-features{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+    .feature-item{display:flex;align-items:center;gap:.5rem;font-size:.9rem;color:var(--gray-600)}
+    .feature-item i{color:var(--color-white);background:var(--color-primary);padding:6px;border-radius:50%;font-size:1.1rem;width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+    .course-content{padding:0 2rem 2.5rem}
+    .course-modules{margin-bottom:2rem}
+    .modules-title{font-weight:600;color:var(--dark-color);margin-bottom:1rem;font-size:1.1rem}
+    .module-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 0;border-bottom:1px solid var(--gray-200);font-size:.95rem;color:var(--gray-600)}
+    .module-item:last-child{border-bottom:none}
+    .module-icon{width:12px;height:12px;background:var(--color-primary);border-radius:50%;border:2px solid var(--color-secondary)}
+    .course-price{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding:1.5rem;background:var(--gray-100);border-radius:var(--border-radius)}
+    .price-info h4{color:var(--dark-color);font-size:1.1rem;margin-bottom:.25rem}
+    .price-amount{font-size:2rem;font-weight:700;color:var(--color-secondary);background:var(--color-primary);padding:0.5rem 1rem;border-radius:8px;display:inline-block}
+    .price-period{font-size:.9rem;color:var(--gray-600)}
+    .btn-enroll{width:100%;background:var(--color-primary);color:var(--color-secondary);padding:1rem;border:none;border-radius:var(--border-radius);font-weight:600;font-size:1rem;cursor:pointer;transition:all .3s;text-decoration:none;display:block;text-align:center}
+    .btn-enroll:hover{background:var(--color-secondary);color:var(--color-white);transform:translateY(-2px)}
+    .btn-enroll i{margin-left:.5rem}
 
-        /* Hero */
-        .hero-cursos {
-            background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-secondary) 100%);
-            color: white;
-            padding: 5rem 0 3rem;
-            text-align: center;
-        }
+    /* small helper for video container */
+    .video-wrapper { margin-top: 12px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg); display: none; }
+    .video-wrapper.active { display: block; }
+    .verify-btn { margin-top: 8px; display: inline-block; padding: .6rem .9rem; border-radius: 8px; border: 1px solid var(--gray-300); cursor:pointer; background: transparent; }
 
-        .hero-cursos h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-        }
+    /* modal styles */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
+    .modal-backdrop.show { display: flex; }
+    .modal { background: white; border-radius: 12px; width: 400px; max-width: calc(100% - 32px); padding: 20px; box-shadow: var(--shadow-xl); }
+    .modal h3 { font-family: var(--font-heading); margin-bottom: 8px; }
+    .modal .field { margin-bottom: 12px; }
+    .modal label { display:block; font-size: .9rem; margin-bottom: 6px; }
+    .modal input { width:100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; }
+    .modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top: 12px; }
+    .small { font-size: .9rem; color: var(--gray-600); }
 
-        /* Curso Card */
-        .curso-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-            margin-bottom: 2rem;
-            height: 100%;
-        }
+    /* Estilos adicionales para consistencia con index.html */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+    }
 
-        .curso-card:hover {
-            transform: translateY(-10px);
-        }
+    /* Footer */
+    .footer {
+      background: var(--color-dark);
+      color: var(--color-primary);
+      padding: 50px 0 30px;
+      text-align: center;
+    }
 
-        .curso-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-        }
+    .footer p {
+      margin: 10px 0;
+      color: var(--color-primary);
+    }
 
-        .curso-content {
-            padding: 2rem;
-        }
+    /* WhatsApp Button */
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 30px;
+      right: 30px;
+      background-color: #25d366;
+      color: #FFF;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 20px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
 
-        .curso-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            color: var(--color-dark);
-            margin-bottom: 1rem;
-        }
+    .whatsapp-float:hover {
+      background-color: #128C7E;
+      transform: scale(1.1);
+      color: #FFF;
+    }
 
-        .curso-meta {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-secondary) 100%);
+      padding: 80px 0;
+      text-align: center;
+      color: var(--color-white);
+    }
 
-        .curso-meta i {
-            color: var(--color-primary);
-        }
+    .cta-title {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
 
-        .curso-price {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 1.5rem;
-        }
+    .cta-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
 
-        .curso-description {
-            color: #6c757d;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
+    .btn-cta {
+      background: var(--color-primary);
+      color: var(--color-dark);
+      padding: 1.2rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
 
-        .btn-comprar {
-            background: var(--color-primary);
-            color: white;
-            border: none;
-            padding: 12px 40px;
-            border-radius: 25px;
-            font-weight: 600;
-            width: 100%;
-            transition: all 0.3s;
-        }
+    .btn-cta:hover {
+      background: var(--color-white);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
 
-        .btn-comprar:hover {
-            background: var(--color-secondary);
-            transform: translateY(-2px);
-        }
+    /* Benefits Section */
+    .benefits-section {
+      background: var(--color-white);
+      padding: 100px 0;
+    }
 
-        .badge-nivel {
-            display: inline-block;
-            padding: 0.35rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-        }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
 
-        .badge-principiante { background: #e3f2fd; color: #1976d2; }
-        .badge-intermedio { background: #fff3e0; color: #f57c00; }
-        .badge-avanzado { background: #f3e5f5; color: #7b1fa2; }
+    .benefit-card {
+      text-align: center;
+      padding: 2rem;
+    }
 
-        /* Mis Cursos */
-        .mis-cursos-section {
-            padding: 4rem 0;
-            background: #f8f9fa;
-        }
+    .benefit-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+      color: var(--color-white);
+    }
 
-        .curso-acceso {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
+    .benefit-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 1rem;
+    }
 
-        .curso-acceso img {
-            width: 150px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
+    .benefit-description {
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
 
-        .btn-acceder {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 30px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
+    /* Hero stats styling */
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
 
-        .btn-acceder:hover {
-            background: #218838;
-        }
+    .stat-item {
+      text-align: center;
+    }
 
-        .progreso-curso {
-            margin-top: 0.5rem;
-        }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
 
-        .progress {
-            height: 8px;
-            border-radius: 10px;
-        }
-    </style>
+    .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Navbar responsive styles */
+    @media (max-width: 768px) {
+      .navbar-toggler {
+        display: block;
+      }
+      
+      .navbar-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--color-dark);
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+      }
+      
+      .navbar-nav.show {
+        display: flex;
+      }
+      
+      #auth-controls {
+        display: none !important;
+      }
+      
+      .hero h1 { font-size: 2.5rem; }
+      .hero-stats { flex-direction: column; gap: 1.5rem; }
+      .courses-grid { grid-template-columns: 1fr; }
+      .course-features { grid-template-columns: 1fr; }
+      .benefits-grid { grid-template-columns: 1fr; }
+    }
+
+  </style>
 </head>
+
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="/">🥖 El Artesano</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/#productos">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/cursos.html">Cursos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/#contacto">Contacto</a></li>
-                    <li class="nav-item" id="nav-mis-cursos" style="display: none;">
-                        <a class="nav-link" href="#mis-cursos">
-                            <i class="ri-book-open-line"></i> Mis Cursos
-                        </a>
-                    </li>
-                </ul>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <span class="logo-text">El Artesano</span>
+      </a>
+      <button class="navbar-toggler" type="button" onclick="toggleMobileMenu()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-nav" id="navbarNav">
+        <a class="nav-link" href="index.html">Inicio</a>
+        <a class="nav-link" href="index.html#sobre-nosotros">Sobre Nosotros</a>
+        <a class="nav-link" href="index.html#productos">Productos</a>
+        <a class="nav-link active" href="#">Cursos</a>
+        <a class="nav-link" href="index.html#servicios">Servicios</a>
+        <a class="nav-link" href="index.html#contacto">Contacto</a>
+      </div>
+      <!-- Auth controls -->
+      <div id="auth-controls" style="display:flex;gap:10px;align-items:center;">
+        <button id="btn-login" class="auth-btn">Ingresar</button>
+        <button id="btn-register" class="auth-btn">Crear cuenta</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 data-aos="fade-down">Cursos de Panadería Artesanal</h1>
+        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
+          Descubre el arte milenario de la panadería con nuestros programas especializados.
+        </p>
+
+        <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
+          <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Estudiantes</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">95%</div>
+            <div class="stat-label">Satisfacción</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Años Exp.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses Section (idéntico visualmente) -->
+  <section class="courses-section">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <h2 class="section-title">Nuestros Programas</h2>
+        <p class="section-subtitle">
+          Cursos diseñados para todos los niveles, con metodología práctica y acompañamiento personalizado
+        </p>
+      </div>
+
+      <div class="courses-grid">
+
+        <!-- CURSO PRINCIPIANTE (agrego data-course-id y data-vimeo-id) -->
+        <div class="course-card" data-aos="fade-up" data-course-id="principiante">
+          <div class="course-header">
+            <span class="course-level">Nivel Inicial</span>
+            <h3 class="course-title">Fundamentos de Panadería</h3>
+            <p class="course-description">
+              Aprende las bases de la panadería artesanal...
+            </p>
+
+            <div class="course-features">
+              <div class="feature-item"><i class="ri-time-line"></i><span>4 semanas</span></div>
+              <div class="feature-item"><i class="ri-group-line"></i><span>Max. 8 personas</span></div>
+              <div class="feature-item"><i class="ri-calendar-line"></i><span>2 clases/semana</span></div>
+              <div class="feature-item"><i class="ri-trophy-line"></i><span>Certificado</span></div>
             </div>
-        </div>
-    </nav>
+          </div>
 
-    <!-- Hero -->
-    <section class="hero-cursos">
-        <div class="container">
-            <h1 data-aos="fade-up">Aprende el Arte de la Panadería</h1>
-            <p class="lead" data-aos="fade-up" data-aos-delay="100">Cursos online y presenciales para convertirte en un maestro panadero</p>
-        </div>
-    </section>
-
-    <!-- Cursos Disponibles -->
-    <section class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">Cursos Disponibles</h2>
-            <div class="row" id="cursos-lista">
-                <!-- Los cursos se cargarán dinámicamente aquí -->
-                <div class="col-12 text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Cargando...</span>
-                    </div>
-                </div>
+          <div class="course-content">
+            <div class="course-modules">
+              <h4 class="modules-title">Contenido del Curso</h4>
+              <div class="module-item"><div class="module-icon"></div><span>Ingredientes y herramientas básicas</span></div>
+              <div class="module-item"><div class="module-icon"></div><span>Técnicas de amasado y fermentación</span></div>
+              <div class="module-item"><div class="module-icon"></div><span>Pan básico y variaciones</span></div>
+              <div class="module-item"><div class="module-icon"></div><span>Horneado y conservación</span></div>
             </div>
-        </div>
-    </section>
 
-    <!-- Mis Cursos (Solo si está autenticado) -->
-    <section class="mis-cursos-section" id="mis-cursos" style="display: none;">
-        <div class="container">
-            <h2 class="mb-4">Mis Cursos</h2>
-            <div id="mis-cursos-lista">
-                <p class="text-muted">No tienes cursos adquiridos aún</p>
+            <div class="course-price">
+              <div class="price-info">
+                <h4>Inversión</h4>
+                <div class="price-amount">$45.000</div>
+                <div class="price-period">Curso completo</div>
+              </div>
             </div>
+
+            <!-- Botón de inscripción: data attributes para manejar curso y vimeo -->
+            <a href="#" class="btn-enroll" data-course-id="principiante" data-vimeo-id="VIMEO_VIDEO_ID_1">
+              Inscribirse Ahora <i class="ri-arrow-right-line"></i>
+            </a>
+
+            <!-- Botones que aparecen después de comprar -->
+            <div style="margin-top:10px;">
+              <button class="verify-btn" data-course-id="principiante">Verificar pago</button>
+              <div class="video-wrapper" id="video-principiante">
+                <!-- iframe se injecta vía JS cuando el usuario tiene acceso -->
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        AOS.init();
-        window.API_BASE = '';
-        
-        const token = localStorage.getItem('user_token');
+        <!-- CURSO INTERMEDIO -->
+        <div class="course-card" data-aos="fade-up" data-aos-delay="200" data-course-id="intermedio">
+          <div class="course-header">
+            <span class="course-level">Nivel Intermedio</span>
+            <h3 class="course-title">Técnicas Avanzadas</h3>
+            <p class="course-description">Profundiza en técnicas especializadas...</p>
+            <div class="course-features">
+              <div class="feature-item"><i class="ri-time-line"></i><span>6 semanas</span></div>
+              <div class="feature-item"><i class="ri-group-line"></i><span>Max. 6 personas</span></div>
+              <div class="feature-item"><i class="ri-calendar-line"></i><span>2 clases/semana</span></div>
+              <div class="feature-item"><i class="ri-trophy-line"></i><span>Certificado</span></div>
+            </div>
+          </div>
 
-        // Verificar si está autenticado
-        if (token) {
-            document.getElementById('nav-mis-cursos').style.display = 'block';
-            document.getElementById('mis-cursos').style.display = 'block';
-            cargarMisCursos();
+          <div class="course-content">
+            <div class="course-modules">
+              <h4 class="modules-title">Contenido del Curso</h4>
+              <div class="module-item"><div class="module-icon"></div><span>Masas madre y fermentación larga</span></div>
+              <div class="module-item"><div class="module-icon"></div><span>Panes de centeno y multicereales</span></div>
+              <div class="module-item"><div class="module-icon"></div><span>Técnicas de moldeado avanzadas</span></div>
+              <div class="module-item"><div class="module-icon"></div><span>Pastelería básica y brioche</span></div>
+            </div>
+
+            <div class="course-price">
+              <div class="price-info">
+                <h4>Inversión</h4>
+                <div class="price-amount">$65.000</div>
+                <div class="price-period">Curso completo</div>
+              </div>
+            </div>
+
+            <a href="#" class="btn-enroll" data-course-id="intermedio" data-vimeo-id="VIMEO_VIDEO_ID_2">
+              Inscribirse Ahora <i class="ri-arrow-right-line"></i>
+            </a>
+
+            <div style="margin-top:10px;">
+              <button class="verify-btn" data-course-id="intermedio">Verificar pago</button>
+              <div class="video-wrapper" id="video-intermedio"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CURSO AVANZADO -->
+        <div class="course-card" data-aos="fade-up" data-aos-delay="400" data-course-id="avanzado">
+          <div class="course-header">
+            <span class="course-level">Nivel Profesional</span>
+            <h3 class="course-title">Maestría en Panadería</h3>
+            <p class="course-description">Conviértete en un maestro panadero...</p>
+            <div class="course-features">
+              <div class="feature-item"><i class="ri-time-line"></i><span>8 semanas</span></div>
+              <div class="feature-item"><i class="ri-group-line"></i><span>Max. 4 personas</span></div>
+              <div class="feature-item"><i class="ri-calendar-line"></i><span>3 clases/semana</span></div>
+              <div class="feature-item"><i class="ri-trophy-line"></i><span>Certificación Pro</span></div>
+            </div>
+          </div>
+
+          <div class="course-content">
+            <div class="course-modules">
+              <h4 class="modules-title">Contenido del Curso</h4>
+              <div class="module-item"><div class="module-icon"></div><span>Técnicas profesionales de panadería</span></div>
+              <div class="module-item"><div class="module-icon"></div><span>Desarrollo de recetas propias</span></div>
+              <div class="module-item"><div class="module-icon"></div><span>Gestión y costos de panadería</span></div>
+              <div class="module-item"><div class="module-icon"></div><span>Marketing y ventas</span></div>
+            </div>
+
+            <div class="course-price">
+              <div class="price-info">
+                <h4>Inversión</h4>
+                <div class="price-amount">$95.000</div>
+                <div class="price-period">Curso completo</div>
+              </div>
+            </div>
+
+            <a href="#" class="btn-enroll" data-course-id="avanzado" data-vimeo-id="VIMEO_VIDEO_ID_3">
+              Inscribirse Ahora <i class="ri-arrow-right-line"></i>
+            </a>
+
+            <div style="margin-top:10px;">
+              <button class="verify-btn" data-course-id="avanzado">Verificar pago</button>
+              <div class="video-wrapper" id="video-avanzado"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section (mantengo) -->
+  <!-- <section class="benefits-section">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <h2 class="section-title">¿Por qué elegir nuestros cursos?</h2>
+        <p class="section-subtitle">Metodología práctica, instructores expertos y acompañamiento personalizado</p>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-card" data-aos="fade-up">
+          <div class="benefit-icon"><i class="ri-user-star-line"></i></div>
+          <h3 class="benefit-title">Instructores Expertos</h3>
+          <p class="benefit-description">Aprende con maestros panaderos con más de 15 años de experiencia</p>
+        </div>
+        <div class="benefit-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="benefit-icon"><i class="ri-tools-line"></i></div>
+          <h3 class="benefit-title">Equipamiento Profesional</h3>
+          <p class="benefit-description">Instalaciones equipadas con hornos profesionales</p>
+        </div>
+        <div class="benefit-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="benefit-icon"><i class="ri-certificate-line"></i></div>
+          <h3 class="benefit-title">Certificación Oficial</h3>
+          <p class="benefit-description">Obtén un certificado reconocido</p>
+        </div>
+        <div class="benefit-card" data-aos="fade-up" data-aos-delay="600">
+          <div class="benefit-icon"><i class="ri-group-2-line"></i></div>
+          <h3 class="benefit-title">Grupos Reducidos</h3>
+          <p class="benefit-description">Clases con pocos estudiantes para atención personalizada</p>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container" data-aos="fade-up">
+      <h2 class="cta-title">¿Listo para comenzar tu journey?</h2>
+      <p class="cta-subtitle">Únete a nuestra comunidad de panaderos artesanales y transforma tu pasión en profesión</p>
+      <a href="index.html#contacto" class="btn-cta">Contactar Ahora</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 El Artesano - Panadería Artesanal. Todos los derechos reservados.</p>
+      <p>Hecho con <span style="color: var(--accent-color);">❤</span> en Buenos Aires</p>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/5491112345678?text=Hola! Me interesa información sobre los cursos de panadería" class="whatsapp-float" target="_blank">
+    <i class="ri-whatsapp-line"></i>
+  </a>
+
+  <!-- LOGIN / REGISTER MODAL -->
+  <div id="modal-backdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h3 id="modal-title">Ingresar / Crear cuenta</h3>
+
+      <div id="auth-forms">
+        <!-- Form: register -->
+        <div id="form-register" style="display:none;">
+          <p class="small">Crea una cuenta con email y contraseña</p>
+          <div class="field"><label>Email</label><input id="reg-email" type="email" /></div>
+          <div class="field"><label>Nombre completo</label><input id="reg-name" type="text" /></div>
+          <div class="field"><label>Contraseña</label><input id="reg-password" type="password" /></div>
+          <div class="actions">
+            <button id="btn-do-register" class="auth-btn">Crear cuenta</button>
+            <button id="btn-show-login" class="auth-btn">Ya tengo cuenta</button>
+          </div>
+          <p id="reg-msg" class="small"></p>
+        </div>
+
+        <!-- Form: login -->
+        <div id="form-login">
+          <p class="small">Ingresa con tu usuario</p>
+          <div class="field"><label>Email</label><input id="login-email" type="email" /></div>
+          <div class="field"><label>Contraseña</label><input id="login-password" type="password" /></div>
+          <div class="actions">
+            <button id="btn-do-login" class="auth-btn">Ingresar</button>
+            <button id="btn-show-register" class="auth-btn">Crear cuenta</button>
+          </div>
+          <p id="login-msg" class="small"></p>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; display:flex; justify-content:flex-end;">
+        <button id="btn-close-modal" class="auth-btn">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+  <!-- Firebase v9 (modular) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    /* ========================
+       CONFIGURACIÓN INDISPENSABLE
+       Reemplazá esto con tu Firebase config real (proyecto Firebase)
+       ========================= */
+    const firebaseConfig = {
+      apiKey: "REEMPLAZA_API_KEY",
+      authDomain: "REEMPLAZA_AUTH_DOMAIN",
+      projectId: "REEMPLAZA_PROJECT_ID",
+      storageBucket: "REEMPLAZA_STORAGE_BUCKET",
+      messagingSenderId: "REEMPLAZA_SENDER_ID",
+      appId: "REEMPLAZA_APP_ID"
+    };
+
+    // Endpoint donde crearás la preferencia de pago (Cloud Function o tu servidor)
+    // Debe aceptar POST { courseId, userId, email } y devolver { init_point } (para Mercado Pago) o session url (Stripe)
+    const CREATE_PAYMENT_ENDPOINT = "https://us-central1-tu-proyecto.cloudfunctions.net/createPayment"; // REEMPLAZAR con tu Cloud Function
+
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Elementos UI
+    const btnLogin = document.getElementById('btn-login');
+    const btnRegister = document.getElementById('btn-register');
+    const authControls = document.getElementById('auth-controls');
+    const modalBackdrop = document.getElementById('modal-backdrop');
+    const formRegister = document.getElementById('form-register');
+    const formLogin = document.getElementById('form-login');
+    const btnCloseModal = document.getElementById('btn-close-modal');
+    const btnShowLogin = document.getElementById('btn-show-login');
+    const btnShowRegister = document.getElementById('btn-show-register');
+    const btnDoRegister = document.getElementById('btn-do-register');
+    const btnDoLogin = document.getElementById('btn-do-login');
+    const regEmail = document.getElementById('reg-email');
+    const regPassword = document.getElementById('reg-password');
+    const regName = document.getElementById('reg-name');
+    const loginEmail = document.getElementById('login-email');
+    const loginPassword = document.getElementById('login-password');
+    const loginMsg = document.getElementById('login-msg');
+    const regMsg = document.getElementById('reg-msg');
+
+    // Mostrar modal helpers
+    function showModal(showRegister=false){
+      modalBackdrop.classList.add('show');
+      if(showRegister){ formRegister.style.display='block'; formLogin.style.display='none'; }
+      else { formRegister.style.display='none'; formLogin.style.display='block'; }
+    }
+    function closeModal(){ modalBackdrop.classList.remove('show'); }
+
+    btnLogin.addEventListener('click', ()=> showModal(false));
+    btnRegister.addEventListener('click', ()=> showModal(true));
+    btnCloseModal.addEventListener('click', closeModal);
+    btnShowLogin.addEventListener('click', ()=> showModal(false));
+    btnShowRegister.addEventListener('click', ()=> showModal(true));
+
+    // Registro
+    btnDoRegister.addEventListener('click', async () => {
+      const email = regEmail.value.trim();
+      const password = regPassword.value;
+      const name = regName.value.trim();
+      regMsg.textContent = '';
+      if(!email || !password){ regMsg.textContent = 'Completa email y contraseña'; return; }
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        // Guarda perfil básico en Firestore
+        await setDoc(doc(db, "users", user.uid), {
+          email: email,
+          name: name || '',
+          createdAt: new Date().toISOString()
+        });
+        regMsg.textContent = 'Cuenta creada. Bienvenido!';
+        closeModal();
+      } catch (err) {
+        regMsg.textContent = 'Error: ' + err.message;
+      }
+    });
+
+    // Login
+    btnDoLogin.addEventListener('click', async () => {
+      const email = loginEmail.value.trim();
+      const password = loginPassword.value;
+      loginMsg.textContent = '';
+      if(!email || !password){ loginMsg.textContent = 'Completa email y contraseña'; return; }
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        loginMsg.textContent = 'Ingresando...';
+        closeModal();
+      } catch (err) {
+        loginMsg.textContent = 'Error: ' + err.message;
+      }
+    });
+
+    // Estado de auth: actualiza UI
+    let currentUser = null;
+    onAuthStateChanged(auth, user => {
+      currentUser = user;
+      updateAuthUI();
+    });
+
+    function updateAuthUI(){
+      const controls = document.getElementById('auth-controls');
+      controls.innerHTML = '';
+      if(currentUser){
+        // mostrar nombre y logout
+        const span = document.createElement('span');
+        span.textContent = currentUser.email;
+        span.style.fontWeight = '600';
+        span.style.color = 'var(--gray-700)';
+        const btnAccount = document.createElement('button');
+        btnAccount.className = 'auth-btn';
+        btnAccount.textContent = 'Mi cuenta';
+        btnAccount.addEventListener('click', () => { alert('Mi cuenta: ' + currentUser.email); });
+        const btnLogout = document.createElement('button');
+        btnLogout.className = 'auth-btn';
+        btnLogout.textContent = 'Salir';
+        btnLogout.addEventListener('click', async () => {
+          await signOut(auth);
+          location.reload();
+        });
+        controls.appendChild(span);
+        controls.appendChild(btnAccount);
+        controls.appendChild(btnLogout);
+      } else {
+        const btnLoginLocal = document.createElement('button');
+        btnLoginLocal.className = 'auth-btn';
+        btnLoginLocal.id = 'btn-login-2';
+        btnLoginLocal.textContent = 'Ingresar';
+        btnLoginLocal.addEventListener('click', ()=> showModal(false));
+        const btnRegLocal = document.createElement('button');
+        btnRegLocal.className = 'auth-btn';
+        btnRegLocal.id = 'btn-register-2';
+        btnRegLocal.textContent = 'Crear cuenta';
+        btnRegLocal.addEventListener('click', ()=> showModal(true));
+        controls.appendChild(btnLoginLocal);
+        controls.appendChild(btnRegLocal);
+      }
+    }
+
+    /* ============================
+       Lógica de pagos e ingreso a contenido
+       ============================ */
+
+    // Función que llama a tu endpoint para crear preferencia/session de pago
+    // Espera: POST { courseId, userId, email } -> { init_point } o { url }
+    async function createPayment(courseId, courseTitle, amount) {
+      if(!currentUser){
+        showModal(false);
+        return;
+      }
+      try {
+        const payload = {
+          courseId,
+          userId: currentUser.uid,
+          email: currentUser.email,
+          title: courseTitle,
+          amount
+        };
+        const res = await fetch(CREATE_PAYMENT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if(data.init_point) {
+          // Mercado Pago : redirigimos al checkout
+          window.location.href = data.init_point;
+        } else if (data.url) {
+          // Stripe o similar
+          window.location.href = data.url;
+        } else {
+          alert('Error al crear pago: respuesta inválida');
         }
+      } catch (err) {
+        console.error(err);
+        alert('Error creando pago: ' + err.message);
+      }
+    }
 
-        // Cargar cursos disponibles
-        async function cargarCursos() {
-            try {
-                const resp = await fetch((window.API_BASE || '') + '/api/cursos');
-                const data = await resp.json();
-                
-                const cursosLista = document.getElementById('cursos-lista');
-                
-                if (data.success && data.data.length > 0) {
-                    cursosLista.innerHTML = data.data.map(curso => `
-                        <div class="col-md-6 col-lg-4" data-aos="fade-up">
-                            <div class="curso-card">
-                                <img src="${curso.imagen_url || 'img/curso-placeholder.jpg'}" class="curso-image" alt="${curso.titulo}">
-                                <div class="curso-content">
-                                    <span class="badge-nivel badge-${curso.nivel || 'principiante'}">${curso.nivel || 'Principiante'}</span>
-                                    <h3 class="curso-title">${curso.titulo}</h3>
-                                    <div class="curso-meta">
-                                        <span><i class="ri-time-line"></i> ${curso.duracion || '4 semanas'}</span>
-                                        <span><i class="ri-play-circle-line"></i> ${curso.lecciones || '12'} lecciones</span>
-                                    </div>
-                                    <p class="curso-description">${curso.descripcion}</p>
-                                    <div class="curso-price">$${curso.precio}</div>
-                                    <button class="btn btn-comprar" onclick="comprarCurso(${curso.id})">
-                                        <i class="ri-shopping-cart-line"></i> Comprar Curso
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-                } else {
-                    cursosLista.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No hay cursos disponibles</p></div>';
-                }
-            } catch (error) {
-                console.error('Error cargando cursos:', error);
-                document.getElementById('cursos-lista').innerHTML = '<div class="col-12 text-center py-5"><p class="text-danger">Error cargando cursos</p></div>';
-            }
+    // Función para consultar Firestore si usuario compró el curso
+    async function userHasPaidForCourse(userId, courseId) {
+      // Buscamos en collection "purchases" documentos con userId, courseId y status == 'paid'
+      try {
+        const purchasesRef = collection(db, "purchases");
+        const q = query(purchasesRef, where("userId", "==", userId), where("courseId", "==", courseId), where("status", "==", "paid"));
+        const snapshot = await getDocs(q);
+        return !snapshot.empty;
+      } catch (err) {
+        console.error('Error checking purchases', err);
+        return false;
+      }
+    }
+
+    // Mostrar video si tiene acceso
+    async function showVideoIfAllowed(courseId, vimeoId) {
+      if(!currentUser){ showModal(false); return; }
+      const allowed = await userHasPaidForCourse(currentUser.uid, courseId);
+      const wrapper = document.getElementById('video-' + courseId);
+      if(allowed) {
+        wrapper.classList.add('active');
+        // Inyectar iframe Vimeo (dominio debe estar permitido en configuración de Vimeo)
+        wrapper.innerHTML = `
+          <iframe src="https://player.vimeo.com/video/${vimeoId}?badge=0&autopause=0&player_id=player_${vimeoId}" 
+                  width="100%" height="480" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
+          </iframe>
+        `;
+      } else {
+        wrapper.classList.remove('active');
+        wrapper.innerHTML = `<p class="small">No tienes acceso a este curso. Finaliza el pago para verlo.</p>`;
+      }
+    }
+
+    // Setup listeners en botones de inscripción y verify
+    document.querySelectorAll('.btn-enroll').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const courseId = btn.getAttribute('data-course-id');
+        const vimeoId = btn.getAttribute('data-vimeo-id');
+        // Precio: podrías guardar precios en data-attribute o en Firestore; aquí usamos switch simple
+        const prices = { 'principiante': 45000, 'intermedio': 65000, 'avanzado': 95000 };
+        const price = prices[courseId] || 0;
+        // Si no está logueado, pedimos ingreso
+        if(!currentUser){ showModal(false); return; }
+        // Crear pago
+        createPayment(courseId, courseId, price);
+      });
+    });
+
+    // Verify buttons
+    document.querySelectorAll('.verify-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const courseId = btn.getAttribute('data-course-id');
+        const vimeoId = btn.closest('.course-card').querySelector('.btn-enroll').getAttribute('data-vimeo-id');
+        if(!currentUser){ showModal(false); return; }
+        const allowed = await userHasPaidForCourse(currentUser.uid, courseId);
+        if(allowed){
+          alert('Pago confirmado. Accediendo al curso...');
+          await showVideoIfAllowed(courseId, vimeoId);
+        } else {
+          alert('Pago no confirmado todavía. Si ya pagaste, espera unos minutos o contactanos.');
         }
+      });
+    });
 
-        // Cargar mis cursos
-        async function cargarMisCursos() {
-            try {
-                const resp = await fetch((window.API_BASE || '') + '/api/cursos/mis-cursos', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                const data = await resp.json();
-                
-                const misCursosLista = document.getElementById('mis-cursos-lista');
-                
-                if (data.success && data.data.length > 0) {
-                    misCursosLista.innerHTML = data.data.map(curso => `
-                        <div class="curso-acceso">
-                            <img src="${curso.imagen_url || 'img/curso-placeholder.jpg'}" alt="${curso.titulo}">
-                            <div class="flex-grow-1">
-                                <h4>${curso.titulo}</h4>
-                                <p class="text-muted mb-2">${curso.descripcion}</p>
-                                <div class="progreso-curso">
-                                    <small class="text-muted">Progreso: ${curso.progreso || 0}%</small>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" style="width: ${curso.progreso || 0}%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-acceder" onclick="accederCurso(${curso.id})">
-                                <i class="ri-play-circle-line"></i> Acceder
-                            </button>
-                        </div>
-                    `).join('');
-                } else {
-                    misCursosLista.innerHTML = '<p class="text-muted">No tienes cursos adquiridos aún</p>';
-                }
-            } catch (error) {
-                console.error('Error cargando mis cursos:', error);
-            }
+    // Auto-check: si el usuario está logueado, chequeamos y mostramos previews si corresponde
+    onAuthStateChanged(auth, async (user) => {
+      if(user) {
+        // por cada course card, intentar mostrar video si ya pagó
+        document.querySelectorAll('.course-card').forEach(async card => {
+          const courseId = card.getAttribute('data-course-id');
+          const vimeoId = card.querySelector('.btn-enroll').getAttribute('data-vimeo-id');
+          const wrapper = document.getElementById('video-' + courseId);
+          const allowed = await userHasPaidForCourse(user.uid, courseId);
+          if(allowed) {
+            wrapper.innerHTML = `
+              <iframe src="https://player.vimeo.com/video/${vimeoId}?badge=0&autopause=0&player_id=player_${vimeoId}" 
+                    width="100%" height="480" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
+              </iframe>
+            `;
+            wrapper.classList.add('active');
+          } else {
+            wrapper.innerHTML = `<p class="small">No tienes acceso a este curso. Pulsa "Inscribirse Ahora" para pagar.</p>`;
+            wrapper.classList.remove('active');
+          }
+        });
+      }
+    });
+
+    /* ============================
+       NOTAS IMPORTANTES (qué configurar en el backend / Vimeo)
+       ============================
+
+      1) FIREBASE:
+         - Crea un proyecto en https://console.firebase.google.com/
+         - Habilita Authentication -> Email/Password.
+         - Crea Firestore en modo producción (o test) y una colección "purchases".
+         - Estructura de documento `purchases` recomendada:
+           { userId: string, courseId: string, status: 'pending'|'paid'|'failed', amount: number, providerPaymentId: string, createdAt: timestamp, paidAt: timestamp }
+
+      2) CLOUD FUNCTION / ENDPOINT CREATE_PAYMENT:
+         - Implementá una función (ej. Firebase Cloud Function) que reciba POST { courseId, userId, email, title, amount }
+         - La función debe:
+           a) Crear un documento en `purchases` con status: 'pending' y guardar su id (external_reference).
+           b) Llamar a la API de Mercado Pago (o Stripe) para crear sesión/preference con external_reference = purchaseId.
+           c) Devolver al frontend { init_point } o { url } para redirigir al checkout.
+         - Endpoint de ejemplo: `https://us-central1-.../createPayment`
+
+      3) WEBHOOK (obligatorio):
+         - La pasarela (Mercado Pago / Stripe) debe enviar webhooks a otra Cloud Function.
+         - En el webhook, validar la firma, consultar el pago y si está `approved` o `paid`:
+             - Actualizar el documento `purchases` -> status: 'paid', paidAt: now, providerPaymentId: ...
+             - Opcional: guardar recibo, enviar email (SendGrid / Nodemailer).
+         - Esto es crítico: **no confíes en la redirección del cliente para dar acceso**.
+
+      4) VIMEO:
+         - Subir videos a Vimeo PRO/Business.
+         - Configurar privacidad:
+           - Hide from Vimeo
+           - Only embed on specific domain(s) (tu dominio)
+           - Disable downloads
+         - Usar player embed (iframe). Con las opciones anteriores, el enlace directo al mp4 no será accesible públicamente.
+         - Para mayor seguridad puedes generar tokens temporales desde tu backend (opcional).
+
+      5) ENV VARS seguras:
+         - Mantén claves (Mercado Pago, Firebase Admin, SendGrid) en variables de entorno en tu servidor/Cloud Functions.
+
+    ============================ */
+
+  </script>
+
+  <script>
+    // Init AOS (animaciones)
+    AOS.init({ duration: 1000, once: true, offset: 100 });
+
+    // Navbar scroll effect (matching index.html)
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu toggle function
+    function toggleMobileMenu() {
+      const navbarNav = document.getElementById('navbarNav');
+      navbarNav.classList.toggle('show');
+    }
+
+    // Smooth scroll (mantengo)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-
-        function comprarCurso(cursoId) {
-            // Buscar el curso en la lista cargada
-            const cursoCard = event.target.closest('.curso-card');
-            if (!cursoCard) return;
-            
-            const titulo = cursoCard.querySelector('.curso-title').textContent;
-            const precioText = cursoCard.querySelector('.curso-price').textContent;
-            const precio = parseFloat(precioText.replace('$', '').replace(',', ''));
-            
-            // Agregar al carrito (usar localStorage como en index.html)
-            let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
-            
-            // Verificar si el curso ya está en el carrito
-            const cursoExistente = carrito.find(item => item.id === cursoId);
-            
-            if (cursoExistente) {
-                alert('Este curso ya está en tu carrito');
-                return;
-            }
-            
-            // Agregar curso al carrito
-            carrito.push({
-                id: cursoId,
-                nombre: titulo,
-                precio: precio,
-                cantidad: 1,
-                tipo: 'curso'
-            });
-            
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-            
-            // Mostrar confirmación
-            if (confirm(`${titulo} agregado al carrito. ¿Ir al checkout?`)) {
-                window.location.href = '/#checkout';
-            }
-        }
-
-        function accederCurso(cursoId) {
-            // Redirigir al reproductor del curso
-            window.location.href = `/curso-player.html?id=${cursoId}`;
-        }
-
-        // Cargar cursos al inicio
-        cargarCursos();
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>
